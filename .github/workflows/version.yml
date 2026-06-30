@@ -6,6 +6,8 @@ name: version
 on:
   push:
     branches: [develop]
+    paths:
+      - ".changeset/**"
 
 concurrency:
   group: version-${{ github.ref }}
