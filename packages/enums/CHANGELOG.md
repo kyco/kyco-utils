@@ -1,5 +1,11 @@
 # @kyco-utils/enums
 
+## 0.1.0
+
+### Minor Changes
+
+- c050ab1: Test minor bump.
+
 ## 0.0.2
 
 ### Patch Changes
