@@ -1,6 +1,6 @@
 {
   "name": "@kyco-utils/types",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Shared, dependency-free TypeScript types for kyco-utils.",
   "type": "module",
   "sideEffects": false,
