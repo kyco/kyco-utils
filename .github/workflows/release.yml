@@ -1,7 +1,10 @@
 name: release
 
-# Runs on main (i.e. when develop is merged in). Publishes only the packages whose
-# version isn't on npm yet — the bumps already happened on develop.
+# Single source of truth for releases, on main. The changesets action does one of
+# two things depending on whether changesets are pending:
+#   - pending changesets  -> opens/updates the "Version Packages" PR (bumps + changelogs)
+#   - none pending         -> publishes the bumped packages to npm
+# So merging a feature PR refreshes the Version PR; merging the Version PR publishes.
 
 on:
   push:
@@ -12,7 +15,8 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: write # push git tags + create GitHub releases
+  contents: write # commit version bumps + push git tags / GitHub releases
+  pull-requests: write # open / update the Version Packages PR
   id-token: write # npm provenance
 
 jobs:
@@ -35,8 +39,10 @@ jobs:
 
       - uses: changesets/action@v1
         with:
-          publish: pnpm release # = pnpm build && changeset publish
-          # No `version` — on main we only publish.
+          version: pnpm changeset version # bump versions + changelogs on the Version PR
+          publish: pnpm release # = pnpm build && changeset publish (runs when no changesets pending)
+          title: "chore: version packages"
+          commit: "chore: version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

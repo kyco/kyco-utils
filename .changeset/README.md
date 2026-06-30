@@ -11,4 +11,4 @@ pnpm changeset
 Pick the changed package(s), the bump type (patch / minor / major), and write a short
 summary. Commit the generated `.changeset/*.md` file with your PR.
 
-See [`PLAN.md`](../PLAN.md) §6 for the full `develop → main` release flow.
+See [`PLAN.md`](../PLAN.md) §6 for the full single-branch (`main`) release flow.

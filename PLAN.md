@@ -228,7 +228,7 @@ packages:
   "changelog": "@changesets/cli/changelog",
   "commit": false,
   "access": "public",
-  "baseBranch": "develop",
+  "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": []
 }
@@ -243,97 +243,69 @@ groups, so each package carries its own version.
 gets a new version and is published. `number` and `types` are untouched (unless they depend
 on `enums` and `updateInternalDependencies` gives them a patch bump).
 
-**Branch flow & developer workflow** (`develop` → `main`)
+**Branch flow & developer workflow** (single `main` branch)
 
-1. Branch off `develop`, make changes.
+1. Branch off `main` → `feat/…`, make changes.
 2. `pnpm changeset` → select changed packages + bump type (patch/minor/major) + a one-line
-   summary. Commit the generated `.changeset/*.md`.
-3. PR into `develop` → CI runs (lint/typecheck/test/build). Merge.
-4. Each push to `develop` updates a standing **"Version Packages" PR** (against `develop`)
-   that applies all pending changesets: bumps versions, writes CHANGELOGs, deletes the
-   changeset files. It just sits there accumulating until you want to release.
-5. **To cut a release:** merge the Version Packages PR into `develop` (versions are now
-   bumped on `develop`), then merge **`develop` → `main`**.
-6. The push to `main` runs **`release.yml`** (`changeset publish` → publishes only packages
-   whose version isn't yet on npm) and **`docs.yml`** (rebuild + deploy Pages).
+   summary. Commit the generated `.changeset/*.md` on the branch.
+3. PR into `main` → CI runs (lint/typecheck/test/build). Merge. This is the only run that
+   tests your code.
+4. Each push to `main` runs **`release.yml`**, which maintains a standing **"Version
+   Packages" PR** that applies all pending changesets: bumps versions, writes CHANGELOGs,
+   deletes the changeset files. It accumulates until you want to release.
+5. **To cut a release:** merge the Version Packages PR. The resulting push to `main` runs
+   `release.yml` again — now there are no pending changesets, so it **publishes** the bumped
+   packages to npm (only those whose version isn't yet published) and triggers **`docs.yml`**.
 
-Because every version mutation happens on `develop` and reaches `main` only through the
-merge, the two branches never drift. Order matters: merge the Version PR into `develop`
-*before* merging `develop → main`, otherwise `main` receives the changesets unconsumed and
-`release.yml` simply no-ops (nothing new to publish) until you do.
+The "Version Packages" PR is the release gate — pending changesets sit on it until you
+choose to merge. That replaces the role a separate `develop` branch used to play, so there's
+no second long-lived branch to keep in sync, no manual `develop → main` PR, and no redundant
+third CI run on the same commits.
 
-> Prefer zero intermediate PRs? You could instead auto-run `changeset version` on `main` and
-> publish in one shot — but that commits version bumps onto `main` that you then have to sync
-> back to `develop`. The Version-PR-on-`develop` flow above avoids that drift.
+> The single changesets action decides what to do by whether changesets are pending:
+> pending → (re)build the Version PR; none pending → publish. One workflow, one branch.
 
 ---
 
-## 7. CI/CD (GitHub Actions) — tuned for `develop` → `main`
+## 7. CI/CD (GitHub Actions) — single `main` branch
 
-Four workflows. Code and version bumps accumulate on **`develop`**; pushing to **`main`**
-(i.e. merging `develop → main`) is what publishes packages and deploys the docs.
+Three workflows. Code and version bumps accumulate on **`main`** via PRs; merging the
+**"Version Packages" PR** is what publishes packages and deploys the docs.
 
-**`ci.yml`** — on PRs into `develop`/`main` and pushes to them
-(`on: { pull_request: { branches: [develop, main] }, push: { branches: [develop, main] } }`):
-checkout → setup pnpm + Node 22 (pnpm cache) → `pnpm install --frozen-lockfile` →
-`biome ci .` → `pnpm typecheck` → `pnpm test` → `pnpm build`.
+**`ci.yml`** — on PRs into `main` only (`on: { pull_request: { branches: [main] } }`):
+checkout → setup pnpm + Node (pnpm cache) → `pnpm install --frozen-lockfile` →
+`biome ci .` → `pnpm typecheck` → `pnpm test` → `pnpm build`. It deliberately does **not**
+listen on `push: main` — the merge commit isn't re-tested (every change was already tested on
+its PR, and `release.yml` builds again on publish), which is what removes the redundant run.
 
-**`version.yml`** — on push to `develop`. Maintains the **"Version Packages" PR** against
-`develop`; it never publishes:
-
-```yaml
-name: version
-on:
-  push: { branches: [develop] }
-concurrency: version-${{ github.ref }}
-permissions:
-  contents: write          # commit version bumps to the PR branch
-  pull-requests: write     # open/update the Version Packages PR
-jobs:
-  version:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 26, cache: pnpm }
-      - run: pnpm install --frozen-lockfile
-      - uses: changesets/action@v1
-        with:
-          version: pnpm changeset version       # bump versions + changelogs on the PR
-          title: "chore: version packages"
-          commit: "chore: version packages"
-          branch: changeset-release/develop     # head branch of the PR
-          # no `publish` → this workflow only manages the PR, never releases
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
-
-**`release.yml`** — on push to `main`. Publishes only the packages whose version isn't on
-npm yet (the bumps already happened on `develop`):
+**`release.yml`** — on push to `main`. The single changesets action both maintains the
+Version PR and publishes, depending on whether changesets are pending:
 
 ```yaml
 name: release
 on:
   push: { branches: [main] }
-concurrency: release-${{ github.ref }}
+concurrency: { group: release-${{ github.ref }}, cancel-in-progress: false }
 permissions:
-  contents: write     # push git tags + GitHub releases
-  id-token: write     # npm provenance
+  contents: write          # commit version bumps + push git tags / GitHub releases
+  pull-requests: write     # open/update the Version Packages PR
+  id-token: write          # npm provenance
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with: { fetch-depth: 0 }              # full history so tags resolve
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 26, cache: pnpm, registry-url: 'https://registry.npmjs.org' }
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with: { node-version: 26.3.0, cache: pnpm, registry-url: 'https://registry.npmjs.org' }
       - run: pnpm install --frozen-lockfile
       - uses: changesets/action@v1
         with:
-          publish: pnpm release       # = pnpm build && changeset publish
-          # no `version` → on main we only publish; bumps happened on develop
+          version: pnpm changeset version     # pending changesets → (re)build the Version PR
+          publish: pnpm release               # none pending → = pnpm build && changeset publish
+          title: "chore: version packages"
+          commit: "chore: version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -347,13 +319,15 @@ Setup needed once:
 - Provenance (`id-token: write` + `NPM_CONFIG_PROVENANCE`) is optional but recommended; it
   adds a verifiable build attestation to each release.
 
-**`docs.yml`** — also on push to `main`, so the same `develop → main` merge that releases
-packages refreshes the docs:
+**`docs.yml`** — on push to `main`, scoped to docs/package changes so feature merges that
+touch neither skip the rebuild:
 
 ```yaml
 name: docs
 on:
-  push: { branches: [main] }   # add `paths: ['apps/docs/**','packages/**']` to skip no-op rebuilds
+  push:
+    branches: [main]
+    paths: ['apps/docs/**', 'packages/**']   # skip no-op rebuilds
 permissions: { contents: read, pages: write, id-token: write }
 concurrency: { group: pages, cancel-in-progress: true }
 jobs:
@@ -361,15 +335,15 @@ jobs:
     environment: github-pages
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 26, cache: pnpm }
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with: { node-version: 26.3.0, cache: pnpm }
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @kyco-utils/docs build      # prerenders to static output
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with: { path: apps/docs/dist }                 # confirm Start's output dir
-      - uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v5
 ```
 
 ---
