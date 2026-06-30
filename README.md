@@ -1,4 +1,4 @@
-# kyco-ts-utils
+# kyco-kyco-utils
 
 A pnpm monorepo of small, independently-versioned TypeScript utilities published to the
 [`@kyco-utils`](https://www.npmjs.com/org/kyco-utils) npm scope, plus a docs site.
