@@ -35,7 +35,5 @@ jobs:
           version: pnpm changeset version # bump versions + changelogs on the PR
           title: "chore: version packages"
           commit: "chore: version packages"
-          branch: changeset-release/develop
-          # No `publish` here — this workflow only manages the PR, never releases.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
