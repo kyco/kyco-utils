@@ -9,7 +9,6 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "isolatedDeclarations": true,
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
