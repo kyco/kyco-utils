@@ -10,9 +10,6 @@ export const UserLocale = {
 
 /**
  * Zod schema for {@link UserLocale}.
- *
- * Requires Zod v4, where `z.enum()` accepts an object literal. On Zod v3 the
- * equivalent would be `z.nativeEnum(UserLocale)`.
  */
 export const zUserLocale = z.enum(UserLocale)
 

@@ -7,10 +7,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OWNER/kyco-ts-utils.git",
+    "url": "git+https://github.com/kyco/ts-utils.git",
     "directory": "packages/types"
   },
-  "homepage": "https://github.com/OWNER/kyco-ts-utils/tree/main/packages/types",
+  "homepage": "https://github.com/kyco/ts-utils/tree/main/packages/types",
   "files": ["dist"],
   "exports": {
     ".": {
