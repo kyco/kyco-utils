@@ -1,15 +1,14 @@
 {
-  "name": "kyco-utils-monorepo",
+  "name": "kyco-utils",
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "packageManager": "[email protected]",
+  "packageManager": "pnpm@11.9.0",
   "engines": {
     "node": ">=22",
     "pnpm": ">=9"
   },
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
     "build": "pnpm -r --filter \"./packages/*\" build",
     "dev": "pnpm -r --parallel --filter \"./packages/*\" dev",
     "test": "pnpm -r test",
@@ -18,7 +17,8 @@
     "typecheck": "pnpm -r typecheck",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "pnpm build && changeset publish"
+    "release": "pnpm build && changeset publish",
+    "update-packages": "pnpm -r update --latest -i"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
