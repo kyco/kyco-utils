@@ -1,0 +1,11 @@
+{
+  "name": "@kyco-utils/docs",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Documentation site (placeholder — replace with TanStack Start). See README.md.",
+  "type": "module",
+  "scripts": {
+    "dev": "node ./scripts/build-placeholder.mjs && echo 'Placeholder built to dist/. Replace this app with TanStack Start — see README.md.'",
+    "build": "node ./scripts/build-placeholder.mjs"
+  }
+}

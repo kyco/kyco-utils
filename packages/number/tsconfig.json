@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "@kyco-utils/enums": ["../enums/src/index.ts"],
+      "@kyco-utils/types": ["../types/src/index.ts"]
+    }
+  },
+  "include": ["src"]
+}

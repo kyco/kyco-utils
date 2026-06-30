@@ -1,0 +1,36 @@
+{
+  "name": "@kyco-utils/types",
+  "version": "0.0.0",
+  "description": "Shared, dependency-free TypeScript types for kyco-utils.",
+  "type": "module",
+  "sideEffects": false,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OWNER/kyco-ts-utils.git",
+    "directory": "packages/types"
+  },
+  "homepage": "https://github.com/OWNER/kyco-ts-utils/tree/main/packages/types",
+  "files": ["dist"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "lint": "biome check ."
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

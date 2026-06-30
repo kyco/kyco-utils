@@ -1,0 +1,40 @@
+{
+  "name": "@kyco-utils/number",
+  "version": "0.0.0",
+  "description": "Locale-aware number utilities for kyco-utils.",
+  "type": "module",
+  "sideEffects": false,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OWNER/kyco-ts-utils.git",
+    "directory": "packages/number"
+  },
+  "homepage": "https://github.com/OWNER/kyco-ts-utils/tree/main/packages/number",
+  "files": ["dist"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "lint": "biome check ."
+  },
+  "dependencies": {
+    "@kyco-utils/enums": "workspace:^",
+    "@kyco-utils/types": "workspace:^"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

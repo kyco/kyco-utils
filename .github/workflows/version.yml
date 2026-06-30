@@ -1,0 +1,41 @@
+name: version
+
+# Runs on develop. Keeps a standing "Version Packages" PR that applies pending
+# changesets (bumps versions + writes changelogs). It never publishes to npm.
+
+on:
+  push:
+    branches: [develop]
+
+concurrency:
+  group: version-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write # commit version bumps to the PR branch
+  pull-requests: write # open / update the Version Packages PR
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - uses: changesets/action@v1
+        with:
+          version: pnpm changeset version # bump versions + changelogs on the PR
+          title: "chore: version packages"
+          commit: "chore: version packages"
+          branch: changeset-release/develop
+          # No `publish` here — this workflow only manages the PR, never releases.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
