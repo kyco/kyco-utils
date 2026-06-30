@@ -1,4 +1,4 @@
-# kyco-utils
+# @kyco-utils/number
 
 A set of utilities for TS projects.
 

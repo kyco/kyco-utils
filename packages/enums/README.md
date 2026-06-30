@@ -1,4 +1,4 @@
-# kyco-utils
+# @kyco-utils/enums
 
 A set of utilities for TS projects.
 
