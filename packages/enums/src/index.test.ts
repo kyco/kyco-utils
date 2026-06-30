@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+
 import { UserLocale, zUserLocale } from './index'
 
 describe('UserLocale', () => {

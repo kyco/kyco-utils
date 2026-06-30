@@ -11,7 +11,9 @@
     "directory": "packages/types"
   },
   "homepage": "https://github.com/kyco/kyco-utils/tree/main/packages/types",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
