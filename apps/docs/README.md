@@ -18,11 +18,11 @@ This package is `private`, so Changesets never publishes it to npm.
 ## The base-path decision (read PLAN.md §8)
 
 A GitHub Pages *project* site is served from a subpath
-(`https://<user>.github.io/kyco-ts-utils/`), which forces a non-default Vite `base`. There
+(`https://<user>.github.io/kyco-kyco-utils/`), which forces a non-default Vite `base`. There
 is a known TanStack issue where a non-default `base` breaks SPA-mode prerender
 ([router #5261](https://github.com/TanStack/router/issues/5261)).
 
 Recommended: use a **custom domain** (add a `CNAME` file to the deployed artifact) so `base`
 stays `/`, and prefer **full static prerendering** of all routes. Otherwise set
-`base: '/kyco-ts-utils/'`, use full SSG (not SPA shell), and verify the build against the
+`base: '/kyco-kyco-utils/'`, use full SSG (not SPA shell), and verify the build against the
 TanStack Start version you pin.

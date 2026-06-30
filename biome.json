@@ -5,13 +5,6 @@
     "clientKind": "git",
     "useIgnoreFile": true
   },
-  "files": {
-    "ignore": [
-      "dist",
-      "node_modules",
-      ".changeset"
-    ]
-  },
   "formatter": {
     "indentStyle": "space",
     "indentWidth": 2,
@@ -39,14 +32,7 @@
         "noConsole": {
           "level": "warn",
           "options": {
-            "allow": [
-              "info",
-              "warn",
-              "error",
-              "group",
-              "groupCollapsed",
-              "groupEnd"
-            ]
+            "allow": ["info", "warn", "error", "group", "groupCollapsed", "groupEnd"]
           }
         }
       }

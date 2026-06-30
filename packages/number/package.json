@@ -1,17 +1,19 @@
 {
   "name": "@kyco-utils/number",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Locale-aware number utilities for kyco-utils.",
   "type": "module",
   "sideEffects": false,
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OWNER/kyco-ts-utils.git",
+    "url": "git+https://github.com/kyco/kyco-utils.git",
     "directory": "packages/number"
   },
-  "homepage": "https://github.com/OWNER/kyco-ts-utils/tree/main/packages/number",
-  "files": ["dist"],
+  "homepage": "https://github.com/kyco/kyco-utils/tree/main/packages/number",
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

@@ -6,6 +6,8 @@ name: version
 on:
   push:
     branches: [develop]
+    paths:
+      - ".changeset/**"
 
 concurrency:
   group: version-${{ github.ref }}
@@ -19,13 +21,13 @@ jobs:
   version:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 26.3.0
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
@@ -35,7 +37,5 @@ jobs:
           version: pnpm changeset version # bump versions + changelogs on the PR
           title: "chore: version packages"
           commit: "chore: version packages"
-          branch: changeset-release/develop
-          # No `publish` here — this workflow only manages the PR, never releases.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

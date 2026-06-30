@@ -1,4 +1,4 @@
-# kyco-ts-utils — Build Plan
+# kyco-kyco-utils — Build Plan
 
 A pnpm monorepo of small, independently-versioned TypeScript packages published to the
 `@kyco-utils` npm scope, plus a TanStack Start docs site on GitHub Pages. Each package
@@ -28,7 +28,7 @@ changing any of the below.
 ## 2. Repository layout
 
 ```
-kyco-ts-utils/
+kyco-kyco-utils/
 ├── apps/
 │   └── docs/                     # @kyco-utils/docs (private) — TanStack Start
 ├── packages/
@@ -296,7 +296,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: pnpm }
+        with: { node-version: 26, cache: pnpm }
       - run: pnpm install --frozen-lockfile
       - uses: changesets/action@v1
         with:
@@ -328,7 +328,7 @@ jobs:
         with: { fetch-depth: 0 }              # full history so tags resolve
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: pnpm, registry-url: 'https://registry.npmjs.org' }
+        with: { node-version: 26, cache: pnpm, registry-url: 'https://registry.npmjs.org' }
       - run: pnpm install --frozen-lockfile
       - uses: changesets/action@v1
         with:
@@ -364,7 +364,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: pnpm }
+        with: { node-version: 26, cache: pnpm }
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @kyco-utils/docs build      # prerenders to static output
       - uses: actions/upload-pages-artifact@v3
@@ -384,7 +384,7 @@ SSR'd. TanStack Start supports this two ways:
   and deep links). Configure via the `prerender` option in the `tanstackStart` plugin.
 
 **The caveat:** a GitHub Pages *project* site is served from a subpath
-(`https://<user>.github.io/kyco-ts-utils/`), which forces a non-default Vite `base`. There is
+(`https://<user>.github.io/kyco-kyco-utils/`), which forces a non-default Vite `base`. There is
 a **known TanStack issue where a non-default `base` breaks SPA-mode prerender**
 ([router #5261](https://github.com/TanStack/router/issues/5261)), and a related one where SPA
 prerender only emits the root route ([#4798](https://github.com/TanStack/router/issues/4798)).
@@ -392,7 +392,7 @@ prerender only emits the root route ([#4798](https://github.com/TanStack/router/
 **Recommended path (avoids the bug entirely):** use a **custom domain** (a `CNAME` file in
 the Pages artifact, e.g. `utils.kyco.dev`) so `base` stays `/`. Then prefer **full static
 prerendering** of all routes, with a `404.html` fallback copy of the shell for client routing.
-If you don't want a custom domain, set `base: '/kyco-ts-utils/'`, use full SSG (not SPA shell),
+If you don't want a custom domain, set `base: '/kyco-kyco-utils/'`, use full SSG (not SPA shell),
 and **test the build against the current TanStack Start version** before relying on it — pin
 the version once it works.
 
@@ -404,14 +404,14 @@ Pages source = "GitHub Actions" (set in repo Settings → Pages).
 
 1. **Zod major version** — `z.enum(object)` requires **Zod 4**. On Zod 3 you'd use
    `z.nativeEnum(UserLocale)`. Decide the supported peer range (`^4.0.0` recommended).
-2. **GitHub Pages base path** — custom domain (clean) vs. `/kyco-ts-utils/` subpath (must
+2. **GitHub Pages base path** — custom domain (clean) vs. `/kyco-kyco-utils/` subpath (must
    verify the prerender bug above). This is the biggest docs unknown.
 3. **First publish** — packages start at `0.0.0`; the first changeset sets real versions. If
    you want them to launch at `1.0.0` as in your example, the first changeset should be a
    major (or just hand-set the initial versions before the first release).
 4. **`number` cross-deps as peers vs deps** — type-only today; `dependencies` is the safe
    default, switch to `peerDependencies` later if install size matters.
-5. **Repo vs scope name** — repo is `kyco-ts-utils`, npm scope is `@kyco-utils`. Fine, just
+5. **Repo vs scope name** — repo is `kyco-kyco-utils`, npm scope is `@kyco-utils`. Fine, just
    keep it intentional.
 
 ---

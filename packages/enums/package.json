@@ -1,17 +1,19 @@
 {
   "name": "@kyco-utils/enums",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Shared runtime enums and Zod schemas for kyco-utils.",
   "type": "module",
   "sideEffects": false,
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OWNER/kyco-ts-utils.git",
+    "url": "git+https://github.com/kyco/kyco-utils.git",
     "directory": "packages/enums"
   },
-  "homepage": "https://github.com/OWNER/kyco-ts-utils/tree/main/packages/enums",
-  "files": ["dist"],
+  "homepage": "https://github.com/kyco/kyco-utils/tree/main/packages/enums",
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
