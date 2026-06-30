@@ -1,12 +1,14 @@
 name: docs
 
-# Builds the docs app and deploys it to GitHub Pages on every push to main, so the
-# same develop -> main merge that releases packages also refreshes the docs.
-# Add `paths: ['apps/docs/**', 'packages/**']` below to skip no-op rebuilds.
+# Builds the docs app and deploys it to GitHub Pages. Scoped to docs/package
+# changes so feature merges that don't touch either skip the rebuild.
 
 on:
   push:
     branches: [main]
+    paths:
+      - "apps/docs/**"
+      - "packages/**"
 
 permissions:
   contents: read
