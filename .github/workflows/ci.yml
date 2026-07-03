@@ -1,10 +1,8 @@
 name: ci
 
-# Gates every change before it merges to main. Runs once, on the PR — the merge
-# commit is not re-tested (release.yml builds again on publish anyway).
 on:
   pull_request:
-    branches: [main]
+    branches: [develop, main]
 
 concurrency:
   group: ci-${{ github.ref }}

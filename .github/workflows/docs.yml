@@ -1,8 +1,5 @@
 name: docs
 
-# Builds the docs app and deploys it to GitHub Pages. Scoped to docs/package
-# changes so feature merges that don't touch either skip the rebuild.
-
 on:
   push:
     branches: [main]
@@ -44,7 +41,7 @@ jobs:
 
       - uses: actions/upload-pages-artifact@v5
         with:
-          path: apps/docs/dist # confirm this matches the docs app's output dir
+          path: apps/docs/dist
 
       - id: deployment
         uses: actions/deploy-pages@v5
