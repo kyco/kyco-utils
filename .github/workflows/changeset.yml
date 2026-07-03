@@ -1,11 +1,11 @@
-name: pre-release
+name: changeset
 
 on:
   push:
     branches: [develop]
 
 concurrency:
-  group: pre-release-${{ github.ref }}
+  group: changeset-${{ github.ref }}
   cancel-in-progress: false
 
 permissions:
@@ -13,7 +13,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  pre-release:
+  changeset:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
