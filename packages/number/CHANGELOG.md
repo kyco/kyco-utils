@@ -1,5 +1,14 @@
 # @kyco-utils/number
 
+## 0.1.1
+
+### Patch Changes
+
+- 76ed236: New enum and jsdoc.
+- Updated dependencies [76ed236]
+  - @kyco-utils/enums@0.1.1
+  - @kyco-utils/types@0.1.1
+
 ## 0.1.0
 
 ### Minor Changes
