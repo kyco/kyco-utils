@@ -1,23 +1,16 @@
 name: release
 
-# Single source of truth for releases, on main. The changesets action does one of
-# two things depending on whether changesets are pending:
-#   - pending changesets  -> opens/updates the "Version Packages" PR (bumps + changelogs)
-#   - none pending         -> publishes the bumped packages to npm
-# So merging a feature PR refreshes the Version PR; merging the Version PR publishes.
-
 on:
   push:
-    branches: [main]
+    branches: [develop]
 
 concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: false
 
 permissions:
-  contents: write # commit version bumps + push git tags / GitHub releases
-  pull-requests: write # open / update the Version Packages PR
-  id-token: write # npm provenance
+  contents: write
+  pull-requests: write
 
 jobs:
   release:
@@ -25,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          fetch-depth: 0 # full history so changeset can tag
+          fetch-depth: 0
 
       - uses: pnpm/action-setup@v6
 
@@ -33,17 +26,13 @@ jobs:
         with:
           node-version: 26.3.0
           cache: pnpm
-          registry-url: "https://registry.npmjs.org"
 
       - run: pnpm install --frozen-lockfile
 
       - uses: changesets/action@v1
         with:
-          version: pnpm changeset version # bump versions + changelogs on the Version PR
-          publish: pnpm release # = pnpm build && changeset publish (runs when no changesets pending)
-          title: "chore: version packages"
-          commit: "chore: version packages"
+          version: pnpm changeset version
+          title: "chore: Version packages"
+          commit: "chore: Version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: "true"
