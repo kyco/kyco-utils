@@ -1,5 +1,11 @@
 # @kyco-utils/enums
 
+## 0.1.1
+
+### Patch Changes
+
+- 76ed236: New enum and jsdoc.
+
 ## 0.1.0
 
 ### Minor Changes
