@@ -4,7 +4,7 @@ Shared [Biome](https://biomejs.dev) configuration for kyco-utils.
 
 ## Usage
 
-Install the package (requires `@biomejs/biome` 2.0+):
+Install the package (requires `@biomejs/biome` v2.5.0+):
 
 ```sh
 pnpm add -D @kyco-utils/biome-config @biomejs/biome
