@@ -1,0 +1,26 @@
+{
+  "name": "@kyco-utils/biome-config",
+  "version": "1.0.1",
+  "description": "Biome configuration for kyco-utils.",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kyco/kyco-utils.git",
+    "directory": "packages/biome-config"
+  },
+  "homepage": "https://github.com/kyco/kyco-utils/tree/main/packages/biome-config",
+  "files": [
+    "biome-base.json"
+  ],
+  "exports": {
+    "./biome": "./biome-base.json"
+  },
+  "peerDependencies": {
+    "@biomejs/biome": ">=2.5.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}
