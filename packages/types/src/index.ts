@@ -1,5 +1,5 @@
 /**
- * The thousands and decimal separators used to format numbers for a locale.
+ * The thousands and decimal separators used to format numbers.
  */
 export type NumberSeparators = {
   thousandsSeparator: string
