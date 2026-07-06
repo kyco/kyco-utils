@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.1",
+    "@kyco-utils/biome-config": "workspace:*",
     "@changesets/cli": "^2.27.9",
     "@types/node": "^26.0.1",
     "tsup": "^8.3.5",
