@@ -23,6 +23,7 @@
         }
       },
       "suspicious": {
+        "noArrayIndexKey": "warn",
         "noShadow": "warn",
         "noConsole": {
           "level": "warn",
