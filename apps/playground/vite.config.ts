@@ -48,5 +48,14 @@ export default defineConfig(({ mode }) => {
     resolve: {
       conditions: fromSource ? [SOURCE_CONDITION, ...defaultClientConditions] : [...defaultClientConditions],
     },
+    run: {
+      tasks: {
+        // tsconfig resolves @kyco-utils/* from the built `dist/` (no source condition), so build deps first.
+        typecheck: {
+          command: 'tsc --noEmit',
+          dependsOn: [{ task: 'build', from: 'dependencies' }],
+        },
+      },
+    },
   }
 })

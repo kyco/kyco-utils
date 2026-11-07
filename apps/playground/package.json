@@ -9,7 +9,6 @@
     "dev:dist": "vp dev --mode dist",
     "build": "vp build",
     "preview": "vp preview",
-    "typecheck": "tsc --noEmit",
     "lint": "biome check ."
   },
   "dependencies": {
