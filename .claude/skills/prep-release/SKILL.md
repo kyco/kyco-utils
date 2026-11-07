@@ -8,7 +8,7 @@ description: Find package changes since the last kyco-utils release and create t
 
 Find what changed since the last release and write changesets for it. Steps:
 
-1. **Find the last release.** Run `git fetch origin` first, then `git log --oneline origin/main`. The last release is the latest `chore: Version packages` commit merged to main.
+1. **Find the last release.** Run `git fetch origin` first, then `git log --oneline origin/main`. The last release is the latest `chore: version packages` commit merged to main.
 2. **Find changed packages.** `git diff --stat <last-release>..HEAD -- packages/`. Ignore `apps/docs` (it's in the changeset ignore list) and changes outside `packages/`.
 3. **Check for existing changesets.** `ls .changeset/*.md`, excluding README.md. Don't duplicate them.
 4. **Propose bumps** for each changed package, based on `git diff <last-release>..HEAD -- packages/<pkg>`:

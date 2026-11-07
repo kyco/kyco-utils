@@ -32,7 +32,7 @@ jobs:
       - uses: changesets/action@v1
         with:
           version: pnpm changeset version
-          title: "chore: Version packages"
-          commit: "chore: Version packages"
+          title: "chore: version packages"
+          commit: "chore: version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
