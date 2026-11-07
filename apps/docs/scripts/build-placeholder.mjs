@@ -14,4 +14,4 @@ copyFileSync(join(root, 'public', 'index.html'), join(dist, 'index.html'))
 // SPA-style fallback so unknown paths still resolve once this is a real router app.
 copyFileSync(join(root, 'public', 'index.html'), join(dist, '404.html'))
 
-console.log('Built placeholder docs -> apps/docs/dist')
+console.info('Built placeholder docs -> apps/docs/dist')
