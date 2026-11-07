@@ -9,7 +9,7 @@ export const definePage = (page: Omit<Page, 'id'>) => page
 export const logGroup = (label: string, entries: Record<string, unknown>) => {
   console.group(label)
   for (const [key, value] of Object.entries(entries)) {
-    console.log(key, value)
+    console.info(key, value)
   }
   console.groupEnd()
 }

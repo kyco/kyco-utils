@@ -26,7 +26,7 @@ const navigate = () => {
   const heading = document.createElement('h2')
   heading.textContent = page.title
   root.append(heading)
-  console.log(`%c▶ ${page.title}`, 'font-weight: bold')
+  console.info(`%c▶ ${page.title}`, 'font-weight: bold')
   cleanup = page.render(root) ?? undefined
 }
 
