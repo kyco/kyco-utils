@@ -2,10 +2,19 @@
   "name": "@kyco-utils/docs",
   "version": "0.0.0",
   "private": true,
-  "description": "Documentation site (placeholder — replace with TanStack Start). See README.md.",
+  "description": "Documentation site for @kyco-utils (VitePress + TypeDoc).",
   "type": "module",
   "scripts": {
-    "dev": "node ./scripts/build-placeholder.mjs && echo 'Placeholder built to dist/. Replace this app with TanStack Start — see README.md.'",
-    "build": "node ./scripts/build-placeholder.mjs"
+    "api": "typedoc",
+    "dev": "typedoc && vitepress dev src",
+    "build": "typedoc && vitepress build src",
+    "preview": "vitepress preview src"
+  },
+  "devDependencies": {
+    "typedoc": "^0.28.20",
+    "typedoc-plugin-markdown": "^4.14.1",
+    "typedoc-vitepress-theme": "^1.1.4",
+    "typescript": "~6.0.0",
+    "vitepress": "^1.6.4"
   }
 }
