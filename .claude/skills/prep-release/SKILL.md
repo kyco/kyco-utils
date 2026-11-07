@@ -33,3 +33,5 @@ Find what changed since the last release and write changesets for it. Steps:
    ```
 
    Write the summary in plain English, not Conventional Commits (no `fix:` prefix). It goes straight into the CHANGELOG. Keep it short and precise: name what changed and skip the reasons and background. Good: "Fix `formatNumber` rounding for negatives." Too long: "Use a clearer sample number when detecting locale number separators."
+
+6. **Commit.** Ask whether to commit the changesets. Once confirmed, stage only the new `.changeset/*.md` files and commit them with the message `chore: changeset`.
