@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "customConditions": [],
+    "lib": ["ES2024", "DOM", "DOM.Iterable"],
+    "types": ["node", "vite-plus/client"],
+    "noEmit": true
+  },
+  "include": ["src", "vite.config.ts"]
+}
