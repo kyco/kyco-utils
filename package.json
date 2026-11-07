@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@11.9.0",
+  "packageManager": "pnpm@12.18.0",
   "scripts": {
     "build": "pnpm -r --filter \"./packages/*\" build",
     "dev": "pnpm -r --parallel --filter \"./packages/*\" dev",
@@ -19,11 +19,11 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.6.5",
-    "@changesets/cli": "^2.27.9",
+    "@changesets/cli": "^3.0.3",
     "@kyco-utils/biome-config": "workspace:*",
     "@types/node": "^26.6.6",
     "tsup": "^8.3.5",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.9"
+    "vitest": "^5.1.0"
   }
 }
