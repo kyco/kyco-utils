@@ -1,0 +1,21 @@
+{
+  "name": "@kyco-utils/playground",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Local consumer app that uses @kyco-utils/* like an external project would.",
+  "type": "module",
+  "scripts": {
+    "dev": "vp dev",
+    "dev:dist": "vp dev --mode dist",
+    "build": "vp build",
+    "preview": "vp preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check ."
+  },
+  "dependencies": {
+    "@kyco-utils/enums": "workspace:*",
+    "@kyco-utils/number": "workspace:*",
+    "@kyco-utils/types": "workspace:*",
+    "zod": "^4.0.0"
+  }
+}
