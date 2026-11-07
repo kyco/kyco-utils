@@ -7,6 +7,6 @@
     "useIgnoreFile": true
   },
   "formatter": {
-    "includes": ["**", "!**/.changeset/**/*.md"]
+    "includes": ["**", "!**/.changeset/**/*.md", "!apps/docs/src/**/*.md"]
   }
 }

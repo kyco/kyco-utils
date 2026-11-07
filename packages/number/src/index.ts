@@ -10,6 +10,15 @@ const DEFAULT_DECIMAL_SEPARATOR = '.'
  * @param locale - A supported {@link UserLocale} (BCP 47 language tag).
  * @returns The {@link NumberSeparators} for the locale.
  * @see {@link UserLocale} for the list of supported locales.
+ *
+ * @example
+ * ```ts
+ * import { UserLocale } from '@kyco-utils/enums'
+ * import { getNumberSeparators } from '@kyco-utils/number'
+ *
+ * getNumberSeparators(UserLocale.EN_GB) // { thousandsSeparator: ',', decimalSeparator: '.' }
+ * getNumberSeparators(UserLocale.DE_DE) // { thousandsSeparator: '.', decimalSeparator: ',' }
+ * ```
  */
 export const getNumberSeparators = (locale: UserLocale): NumberSeparators => {
   // @locale-updates
