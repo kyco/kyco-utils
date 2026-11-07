@@ -13,8 +13,9 @@ const DEFAULT_DECIMAL_SEPARATOR = '.'
  */
 export const getNumberSeparators = (locale: UserLocale): NumberSeparators => {
   // @locale-updates
-  const parts = new Intl.NumberFormat(locale).formatToParts(11111.1)
+  const parts = new Intl.NumberFormat(locale).formatToParts(12345.6)
   const thousandsSeparator = parts.find((part) => part.type === 'group')?.value ?? DEFAULT_THOUSANDS_SEPARATOR
   const decimalSeparator = parts.find((part) => part.type === 'decimal')?.value ?? DEFAULT_DECIMAL_SEPARATOR
+
   return { thousandsSeparator, decimalSeparator }
 }
