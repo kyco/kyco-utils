@@ -1,5 +1,11 @@
 # @kyco-utils/number
 
+## 0.1.2
+
+### Patch Changes
+
+- 329c874: Simplify `getNumberSeparators` sample value.
+
 ## 0.1.1
 
 ### Patch Changes
