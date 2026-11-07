@@ -1,4 +1,5 @@
 ---
+
 name: prep-release
 description: Find package changes since the last kyco-utils release and create the matching changesets.
 ---
@@ -14,14 +15,15 @@ Find what changed since the last release and write changesets for it. Steps:
    - patch: fixes, refactors, internal changes
    - minor: new exports or features, new lint rules in biome-config
    - major: breaking API changes
-   Show the proposal as a table, then wait for confirmation:
+     Show the proposal as a table, then wait for confirmation:
 
-   | Package | Bump | Current | New | Changeset summary |
-   |---|---|---|---|---|
-   | `@kyco-utils/<pkg>` | patch | 0.1.1 | 0.1.2 | • Exact wording of each summary line |
+   | Package             | Bump  | Current | New   | Changeset summary                    |
+   | ------------------- | ----- | ------- | ----- | ------------------------------------ |
+   | `@kyco-utils/<pkg>` | patch | 0.1.1   | 0.1.2 | • Exact wording of each summary line |
 
    Take the current version from `origin/main`'s `package.json`. Use one bullet per summary line, separated with `<br>`. Mention any packages you skipped and why below the table.
 5. **Write changesets** as `.changeset/<kebab-name>.md` (`pnpm changeset` is interactive, so write the file directly):
+
    ```md
    ---
    "@kyco-utils/<pkg>": patch
@@ -29,4 +31,5 @@ Find what changed since the last release and write changesets for it. Steps:
 
    Short user-facing summary.
    ```
+
    Write the summary in plain English, not Conventional Commits (no `fix:` prefix). It goes straight into the CHANGELOG. Keep it short and precise: name what changed and skip the reasons and background. Good: "Fix `formatNumber` rounding for negatives." Too long: "Use a clearer sample number when detecting locale number separators."
