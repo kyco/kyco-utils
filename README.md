@@ -22,7 +22,7 @@ Run `/prep-release` on your feature branch. It finds the packages that changed s
 2. **Open a PR to `develop`**. CI runs lint, typecheck, tests and the build.
 3. **Merge it.** The `changeset` workflow then opens (or updates) a `chore: version packages` PR on `develop` that bumps versions and changelogs.
 4. **Merge the Version packages PR.**
-5. **Open a PR from `develop` to `main` and merge it.** The `release` workflow publishes to npm (`pnpm release`) and creates git tags.
+5. **Open a PR from `develop` to `main` and merge it.** The `release` workflow builds, tests and publishes to npm (Trusted Publishing), then creates git tags and GitHub releases.
 
 Changes that don't affect a published package (CI, docs, root tooling) don't need a changeset.
 
