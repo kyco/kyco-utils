@@ -31,7 +31,11 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - uses: changesets/action/version@v2
+      - id: select-mode
+        uses: changesets/action/select-mode@v2
+
+      - if: steps.select-mode.outputs.mode == 'version'
+        uses: changesets/action/version@v2
         with:
           script: pnpm changeset version
           pr-title: "chore: version packages"
