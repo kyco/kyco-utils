@@ -1,5 +1,11 @@
 # @kyco-utils/types
 
+## 0.1.3
+
+### Patch Changes
+
+- 4929e71: Add usage examples and property descriptions to TSDoc comments.
+
 ## 0.1.2
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @kyco-utils/number
 
+## 0.1.4
+
+### Patch Changes
+
+- 4929e71: Add usage examples to TSDoc comments.
+- Updated dependencies [4929e71]
+- Updated dependencies [4929e71]
+  - @kyco-utils/types@0.1.3
+  - @kyco-utils/enums@0.1.3
+
 ## 0.1.3
 
 ### Patch Changes
