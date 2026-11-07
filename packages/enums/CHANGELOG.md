@@ -1,5 +1,11 @@
 # @kyco-utils/enums
 
+## 0.1.2
+
+### Patch Changes
+
+- 532f1e4: Ship separate ESM (`.mjs`, `.d.mts`) and CJS (`.cjs`, `.d.cts`) builds and types.
+
 ## 0.1.1
 
 ### Patch Changes

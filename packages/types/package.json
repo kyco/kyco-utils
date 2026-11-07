@@ -1,6 +1,6 @@
 {
   "name": "@kyco-utils/types",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Shared, dependency-free TypeScript types for kyco-utils.",
   "type": "module",
   "sideEffects": false,
@@ -16,19 +16,24 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "@kyco-utils/source": "./src/index.ts",
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     }
   },
   "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
+    "build": "vp pack",
+    "dev": "vp pack --watch",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run --passWithNoTests",
     "lint": "biome check ."
   },
   "publishConfig": {
