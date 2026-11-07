@@ -4,35 +4,35 @@ on:
   push:
     branches: [develop]
 
+permissions: {}
+
 concurrency:
   group: changeset-${{ github.ref }}
   cancel-in-progress: false
 
-permissions:
-  contents: write
-  pull-requests: write
-
 jobs:
-  changeset:
+  version:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # commit version changes
+      pull-requests: write # create version PR
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - uses: pnpm/action-setup@v6
 
       - uses: actions/setup-node@v6
         with:
           node-version: 26.13.0
-          cache: pnpm
+          package-manager-cache: false
 
       - run: pnpm install --frozen-lockfile
 
-      - uses: changesets/action@v1
+      - uses: changesets/action/version@v2
         with:
-          version: pnpm changeset version
-          title: "chore: Version packages"
-          commit: "chore: Version packages"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          script: pnpm changeset version
+          pr-title: "chore: version packages"
+          commit-message: "chore: version packages"
