@@ -1,6 +1,6 @@
 {
   "name": "@kyco-utils/biome-config",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Biome configuration for kyco-utils.",
   "type": "module",
   "license": "MIT",
