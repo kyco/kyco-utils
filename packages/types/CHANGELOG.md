@@ -1,5 +1,12 @@
 # @kyco-utils/types
 
+## 0.2.0
+
+### Minor Changes
+
+- 899e82a: Drop the CommonJS build; the package is now ESM-only.
+- 899e82a: Add install and usage docs to the README.
+
 ## 0.1.3
 
 ### Patch Changes
