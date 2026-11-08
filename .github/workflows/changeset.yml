@@ -15,7 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write # commit version changes
-      pull-requests: write # create version PR
+      pull-requests: write # create version PR and release PR
+      actions: write # trigger CI on the release PR
     steps:
       - uses: actions/checkout@v7
         with:
@@ -35,3 +36,17 @@ jobs:
           script: pnpm changeset version
           pr-title: "chore: version packages"
           commit-message: "chore: version packages"
+
+      # Version PR merged → develop has unpublished versions → open the release PR into main.
+      - if: steps.select-mode.outputs.mode == 'publish'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -n "$(gh pr list --base main --head develop --state open --json number --jq '.[].number')" ]; then
+            echo "Release PR already open"
+            exit 0
+          fi
+          gh pr create --base main --head develop --title "chore: release" \
+            --body "Merging this publishes the versions from the last \"version packages\" PR to npm."
+          # PRs opened with GITHUB_TOKEN don't trigger `pull_request` workflows, so run CI explicitly.
+          gh workflow run ci.yml --ref develop
