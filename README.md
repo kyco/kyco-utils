@@ -1,30 +1,37 @@
 # kyco-utils
 
-A set of utilities for TS projects.
+Small, tree-shakeable TypeScript utilities. Install only the packages you need.
 
-## Releasing
+📖 **[Documentation & API reference](https://kyco.github.io/kyco-utils)**
 
-Releases use [Changesets](https://github.com/changesets/changesets). Branch flow: `feature/*` → `develop` → `main`.
+## Packages
 
-### With the `prep-release` skill
+All packages are ESM only. See each package's README for details.
 
-Run `/prep-release` on your feature branch. It finds the packages that changed since the last release and writes their changesets. Then continue from step 2 below.
+| Package                                             | Description                                        | Version                                                                                                                 |
+| --------------------------------------------------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| [`@kyco-utils/types`](packages/types)               | Shared, dependency-free TypeScript types.          | [![npm](https://img.shields.io/npm/v/@kyco-utils/types)](https://www.npmjs.com/package/@kyco-utils/types)               |
+| [`@kyco-utils/enums`](packages/enums)               | Runtime enums and their Zod schemas.               | [![npm](https://img.shields.io/npm/v/@kyco-utils/enums)](https://www.npmjs.com/package/@kyco-utils/enums)               |
+| [`@kyco-utils/number`](packages/number)             | Locale-aware number utilities.                     | [![npm](https://img.shields.io/npm/v/@kyco-utils/number)](https://www.npmjs.com/package/@kyco-utils/number)             |
+| [`@kyco-utils/biome-config`](packages/biome-config) | Shared [Biome](https://biomejs.dev) configuration. | [![npm](https://img.shields.io/npm/v/@kyco-utils/biome-config)](https://www.npmjs.com/package/@kyco-utils/biome-config) |
 
-### Manually
+## Quick start
 
-1. **Add a changeset** on your feature branch for every package that changed:
+```sh
+pnpm add @kyco-utils/number @kyco-utils/enums
+```
 
-   ```sh
-   pnpm changeset
-   ```
+```ts
+import { UserLocale } from '@kyco-utils/enums'
+import { getNumberSeparators } from '@kyco-utils/number'
 
-   Pick the packages and the bump (patch/minor/major), write a summary, and commit the generated `.changeset/*.md` file. Write the summary in plain English, not Conventional Commits format. It goes straight into the package's CHANGELOG, e.g. "Fix rounding in `formatNumber` for negative values." or "Add `parseNumber` helper."
-2. **Open a PR to `develop`**. CI runs lint, typecheck, tests and the build.
-3. **Merge it.** The `changeset` workflow then opens (or updates) a `chore: version packages` PR on `develop` that bumps versions and changelogs.
-4. **Merge the Version packages PR.**
-5. **Open a PR from `develop` to `main` and merge it.** The `release` workflow builds, tests and publishes to npm (Trusted Publishing), then creates git tags and GitHub releases.
+getNumberSeparators(UserLocale.DE_DE)
+// { thousandsSeparator: '.', decimalSeparator: ',' }
+```
 
-Changes that don't affect a published package (CI, docs, root tooling) don't need a changeset.
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for local development and the release process.
 
 ## License
 

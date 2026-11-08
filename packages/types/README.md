@@ -8,7 +8,7 @@ Shared, dependency-free TypeScript types.
 pnpm add @kyco-utils/types
 ```
 
-Types only, no runtime code. ESM only.
+Types only, no runtime code.
 
 ## Usage
 

@@ -5,10 +5,8 @@ Shared runtime enums and their [Zod](https://zod.dev) schemas.
 ## Install
 
 ```sh
-pnpm add @kyco-utils/enums zod
+pnpm add @kyco-utils/enums
 ```
-
-Requires `zod` v4 as a peer dependency. ESM only.
 
 ## Usage
 
