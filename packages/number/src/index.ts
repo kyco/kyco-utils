@@ -1,6 +1,7 @@
 import type { UserLocale } from '@kyco-utils/enums'
 import type { NumberSeparators } from '@kyco-utils/types'
 
+const SAMPLE_NUMBER = 1234567.8
 const DEFAULT_THOUSANDS_SEPARATOR = ','
 const DEFAULT_DECIMAL_SEPARATOR = '.'
 
@@ -21,7 +22,7 @@ const DEFAULT_DECIMAL_SEPARATOR = '.'
  */
 export const getNumberSeparators = (locale: UserLocale): NumberSeparators => {
   // @locale-updates
-  const parts = new Intl.NumberFormat(locale).formatToParts(12345.6)
+  const parts = new Intl.NumberFormat(locale).formatToParts(SAMPLE_NUMBER)
   const thousandsSeparator = parts.find((part) => part.type === 'group')?.value ?? DEFAULT_THOUSANDS_SEPARATOR
   const decimalSeparator = parts.find((part) => part.type === 'decimal')?.value ?? DEFAULT_DECIMAL_SEPARATOR
 
