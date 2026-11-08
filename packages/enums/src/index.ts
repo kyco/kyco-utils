@@ -38,9 +38,10 @@ export type ColorMode = z.infer<typeof zColorMode>
 // -------------------------------------------------------
 
 /**
- * Locales supported across kyco-utils, as [BCP 47](https://developer.mozilla.org/en-US/docs/Glossary/BCP_47_language_tag)
- * language tags in the form `{language}-{region}`: an [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes)
- * language code and an [ISO 3166-1](https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes) region code.
+ * Locales supported across kyco-utils. Uses [BCP 47](https://developer.mozilla.org/en-US/docs/Glossary/BCP_47_language_tag)
+ * language tags in the form `{language}-{region}`, where `{language}` is an
+ * [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes) code and
+ * `{region}` is an [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes) code.
  *
  * @enum
  * @example
