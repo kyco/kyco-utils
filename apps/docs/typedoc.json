@@ -4,7 +4,8 @@
   "entryPointStrategy": "packages",
   "packageOptions": {
     "entryPoints": ["src/index.ts"],
-    "readme": "none"
+    "readme": "none",
+    "sort": ["source-order"]
   },
   "plugin": ["typedoc-plugin-markdown", "typedoc-vitepress-theme"],
   "out": "src/api",
