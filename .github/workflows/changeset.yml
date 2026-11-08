@@ -16,7 +16,6 @@ jobs:
     permissions:
       contents: write # commit version changes
       pull-requests: write # create version PR and release PR
-      actions: write # trigger CI on the release PR
     steps:
       - uses: actions/checkout@v7
         with:
@@ -48,5 +47,3 @@ jobs:
           fi
           gh pr create --base main --head develop --title "chore: release" \
             --body "Merging this publishes the versions from the last \"version packages\" PR to npm."
-          # PRs opened with GITHUB_TOKEN don't trigger `pull_request` workflows, so run CI explicitly.
-          gh workflow run ci.yml --ref develop
