@@ -22,14 +22,9 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - uses: pnpm/action-setup@v6
-
-      - uses: actions/setup-node@v6
+      - uses: ./.github/actions/setup
         with:
-          node-version: 26.13.0
-          package-manager-cache: false
-
-      - run: pnpm install --frozen-lockfile
+          cache: false
 
       - id: select-mode
         uses: changesets/action/select-mode@v2

@@ -3,7 +3,7 @@
 Install only the packages you need:
 
 ```sh
-pnpm add @kyco-utils/number @kyco-utils/enums
+pnpm add @kyco-utils/number @kyco-utils/enums zod
 ```
 
 ```ts
@@ -14,4 +14,4 @@ getNumberSeparators(UserLocale.DE_DE)
 // { thousandsSeparator: '.', decimalSeparator: ',' }
 ```
 
-`@kyco-utils/enums` requires `zod` as a peer dependency.
+`@kyco-utils/enums` and `@kyco-utils/number` require `zod` v4 as a peer dependency. All packages are ESM only.

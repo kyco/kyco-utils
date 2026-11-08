@@ -32,7 +32,7 @@ export const ColorMode = {
  * zColorMode.safeParse('blue').success // false
  * ```
  */
-export const zColorMode = z.enum([ColorMode.SYSTEM, ColorMode.LIGHT, ColorMode.DARK] as const)
+export const zColorMode = z.enum(ColorMode)
 
 export type ColorMode = z.infer<typeof zColorMode>
 
