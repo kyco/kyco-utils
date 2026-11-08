@@ -5,7 +5,7 @@ Locale-aware number utilities.
 ## Install
 
 ```sh
-pnpm add @kyco-utils/number @kyco-utils/enums
+pnpm add @kyco-utils/number @kyco-utils/enums zod
 ```
 
 ## Usage

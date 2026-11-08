@@ -5,7 +5,7 @@ Shared runtime enums and their [Zod](https://zod.dev) schemas.
 ## Install
 
 ```sh
-pnpm add @kyco-utils/enums
+pnpm add @kyco-utils/enums zod
 ```
 
 ## Usage
