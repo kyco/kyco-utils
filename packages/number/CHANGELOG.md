@@ -1,5 +1,15 @@
 # @kyco-utils/number
 
+## 0.2.1
+
+### Patch Changes
+
+- e733f15: Update README install steps.
+- Updated dependencies [e733f15]
+- Updated dependencies [e733f15]
+  - @kyco-utils/enums@0.2.1
+  - @kyco-utils/types@0.2.1
+
 ## 0.2.0
 
 ### Minor Changes

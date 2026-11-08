@@ -1,5 +1,11 @@
 # @kyco-utils/biome-config
 
+## 1.0.4
+
+### Patch Changes
+
+- e733f15: Update README.
+
 ## 1.0.3
 
 ### Patch Changes

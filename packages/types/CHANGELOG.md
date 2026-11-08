@@ -1,5 +1,11 @@
 # @kyco-utils/types
 
+## 0.2.1
+
+### Patch Changes
+
+- e733f15: Update README.
+
 ## 0.2.0
 
 ### Minor Changes
