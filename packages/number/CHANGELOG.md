@@ -1,5 +1,20 @@
 # @kyco-utils/number
 
+## 0.2.0
+
+### Minor Changes
+
+- 899e82a: Drop the CommonJS build; the package is now ESM-only.
+- 899e82a: Add `zod` as a peer dependency.
+- 899e82a: Add install and usage docs to the README.
+
+### Patch Changes
+
+- Updated dependencies [899e82a]
+- Updated dependencies [899e82a]
+  - @kyco-utils/enums@0.2.0
+  - @kyco-utils/types@0.2.0
+
 ## 0.1.4
 
 ### Patch Changes

@@ -9,3 +9,7 @@ pnpm --filter @kyco-utils/docs preview  # serve built dist/
 ```
 
 Deployed to GitHub Pages by `.github/workflows/docs.yml`.
+
+## TypeScript version
+
+This app pins `typescript` to `~6.0.0` on purpose, while the rest of the repo uses v7. TypeDoc's `typescript` peer range stops at `6.0.x`. Leave the pin until TypeDoc supports v7.

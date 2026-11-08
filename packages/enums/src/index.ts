@@ -3,7 +3,7 @@ import * as z from 'zod'
 // -------------------------------------------------------
 
 /**
- * Supported color modes available.
+ * Color modes a user can choose for the UI.
  *
  * @enum
  * @example
@@ -20,10 +20,9 @@ export const ColorMode = {
 } as const
 
 /**
- * Zod schema for {@link ColorMode}.
+ * Zod schema that validates a {@link ColorMode}.
  *
  * @group Schemas
- *
  * @example
  * ```ts
  * import { zColorMode } from '@kyco-utils/enums'
@@ -32,15 +31,16 @@ export const ColorMode = {
  * zColorMode.safeParse('blue').success // false
  * ```
  */
-export const zColorMode = z.enum([ColorMode.SYSTEM, ColorMode.LIGHT, ColorMode.DARK] as const)
+export const zColorMode = z.enum(ColorMode)
 
 export type ColorMode = z.infer<typeof zColorMode>
 
 // -------------------------------------------------------
 
 /**
- * Supported locales available. Follows [BCP 47](https://developer.mozilla.org/en-US/docs/Glossary/BCP_47_language_tag) language tags,
- * i.e. generally in the format of `{ISO 639-1}-{ISO 3166-1}`.
+ * Locales supported across kyco-utils, as [BCP 47](https://developer.mozilla.org/en-US/docs/Glossary/BCP_47_language_tag)
+ * language tags in the form `{language}-{region}`: an [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes)
+ * language code and an [ISO 3166-1](https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes) region code.
  *
  * @enum
  * @example
@@ -57,10 +57,9 @@ export const UserLocale = {
 } as const
 
 /**
- * Zod schema for {@link UserLocale}.
+ * Zod schema that validates a {@link UserLocale}.
  *
  * @group Schemas
- *
  * @example
  * ```ts
  * import { zUserLocale } from '@kyco-utils/enums'

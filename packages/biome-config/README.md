@@ -28,4 +28,4 @@ Any rule can be overridden locally — `extends` merges the shared config with y
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://github.com/kyco/kyco-utils/blob/main/LICENSE)

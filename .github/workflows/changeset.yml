@@ -15,21 +15,16 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write # commit version changes
-      pull-requests: write # create version PR
+      pull-requests: write # create version PR and release PR
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
           persist-credentials: false
 
-      - uses: pnpm/action-setup@v6
-
-      - uses: actions/setup-node@v6
+      - uses: ./.github/actions/setup
         with:
-          node-version: 26.13.0
-          package-manager-cache: false
-
-      - run: pnpm install --frozen-lockfile
+          cache: false
 
       - id: select-mode
         uses: changesets/action/select-mode@v2
@@ -40,3 +35,15 @@ jobs:
           script: pnpm changeset version
           pr-title: "chore: version packages"
           commit-message: "chore: version packages"
+
+      # Version PR merged → develop has unpublished versions → open the release PR into main.
+      - if: steps.select-mode.outputs.mode == 'publish'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -n "$(gh pr list --base main --head develop --state open --json number --jq '.[].number')" ]; then
+            echo "Release PR already open"
+            exit 0
+          fi
+          gh pr create --base main --head develop --title "chore: release" \
+            --body "Merging this publishes the versions from the last \"version packages\" PR to npm."
