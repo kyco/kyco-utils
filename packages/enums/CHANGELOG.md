@@ -1,5 +1,11 @@
 # @kyco-utils/enums
 
+## 0.2.1
+
+### Patch Changes
+
+- e733f15: Clarify `Locale` JSDoc and update README install steps.
+
 ## 0.2.0
 
 ### Minor Changes
