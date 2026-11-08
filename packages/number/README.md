@@ -5,10 +5,8 @@ Locale-aware number utilities.
 ## Install
 
 ```sh
-pnpm add @kyco-utils/number zod
+pnpm add @kyco-utils/number @kyco-utils/enums zod
 ```
-
-Requires `zod` v4 as a peer dependency (via `@kyco-utils/enums`). ESM only.
 
 ## Usage
 
