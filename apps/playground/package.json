@@ -8,8 +8,7 @@
     "dev": "vp dev",
     "dev:dist": "vp dev --mode dist",
     "build": "vp build",
-    "preview": "vp preview",
-    "lint": "biome check ."
+    "preview": "vp preview"
   },
   "dependencies": {
     "@kyco-utils/enums": "workspace:*",

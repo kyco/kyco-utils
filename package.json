@@ -8,7 +8,6 @@
     "build": "vp run -r build",
     "dev": "vp run -r --parallel dev",
     "test": "vp run -r test",
-    "clean": "find . -name node_modules -type d -prune -exec rm -rf {} + && find . -name pnpm-lock.yaml -type f -delete",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "typecheck": "vp run -r typecheck",
@@ -17,7 +16,7 @@
     "update-packages": "pnpm dlx npm-check-updates --format group --cooldown 1 -i"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.6.5",
+    "@biomejs/biome": "^2.6.6",
     "@changesets/cli": "^3.0.3",
     "@kyco-utils/biome-config": "workspace:*",
     "@types/node": "^26.6.6",

@@ -24,15 +24,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-
-      - uses: pnpm/action-setup@v6
-
-      - uses: actions/setup-node@v6
         with:
-          node-version: 26.13.0
-          cache: pnpm
+          persist-credentials: false
 
-      - run: pnpm install --frozen-lockfile
+      - uses: ./.github/actions/setup
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
 
       - name: Build docs
         run: pnpm --filter @kyco-utils/docs build

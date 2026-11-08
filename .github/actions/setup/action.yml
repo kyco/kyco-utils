@@ -1,0 +1,21 @@
+name: setup
+description: Install pnpm, Node (from .nvmrc) and dependencies.
+
+inputs:
+  cache:
+    description: Cache the pnpm store. Disable in release workflows to avoid cache poisoning.
+    default: "true"
+
+runs:
+  using: composite
+  steps:
+    - uses: pnpm/action-setup@v6
+
+    - uses: actions/setup-node@v6
+      with:
+        node-version-file: .nvmrc
+        cache: ${{ inputs.cache == 'true' && 'pnpm' || '' }}
+        package-manager-cache: ${{ inputs.cache == 'true' }}
+
+    - run: pnpm install --frozen-lockfile
+      shell: bash
