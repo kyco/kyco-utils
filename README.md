@@ -18,7 +18,7 @@ All packages are ESM only. See each package's README for details.
 ## Quick start
 
 ```sh
-pnpm add @kyco-utils/number @kyco-utils/enums
+pnpm add @kyco-utils/number @kyco-utils/enums zod
 ```
 
 ```ts
