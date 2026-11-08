@@ -35,3 +35,4 @@ Find what changed since the last release and write changesets for it. Steps:
    Write the summary in plain English, not Conventional Commits (no `fix:` prefix). It goes straight into the CHANGELOG. Keep it short and precise: name what changed and skip the reasons and background. Good: "Fix `formatNumber` rounding for negatives." Too long: "Use a clearer sample number when detecting locale number separators."
 
 6. **Commit.** Ask whether to commit the changesets. Once confirmed, stage only the new `.changeset/*.md` files and commit them with the message `chore: changeset`.
+7. **Pull request.** Once committed, ask whether to open a pull request into `develop`. Once confirmed, push the current branch (`git push -u origin HEAD`) and run `gh pr create --base develop`. Use the branch's commits for the title and body, and list the planned bumps in the body. If a PR already exists for the branch, push and share its URL instead.
