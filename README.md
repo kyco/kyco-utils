@@ -22,10 +22,10 @@ pnpm add @kyco-utils/number @kyco-utils/enums zod
 ```
 
 ```ts
-import { UserLocale } from '@kyco-utils/enums'
+import { SupportedLocale } from '@kyco-utils/enums'
 import { getNumberSeparators } from '@kyco-utils/number'
 
-getNumberSeparators(UserLocale.DE_DE)
+getNumberSeparators(SupportedLocale.DE_DE)
 // { thousandsSeparator: '.', decimalSeparator: ',' }
 ```
 
