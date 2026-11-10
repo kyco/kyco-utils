@@ -11,13 +11,16 @@ hero:
       text: API reference
       link: /api/
 features:
-  - title: '@kyco-utils/types'
-    details: Shared, dependency-free TypeScript types.
-    link: /api/@kyco-utils/types
-  - title: '@kyco-utils/enums'
-    details: Runtime enums and Zod schemas.
-    link: /api/@kyco-utils/enums
+  - title: '@kyco-utils/search'
+    details: Case- and accent-insensitive search with highlighting.
+    link: /guide/search
   - title: '@kyco-utils/number'
     details: Locale-aware number utilities.
-    link: /api/@kyco-utils/number
+    link: /guide/number
+  - title: '@kyco-utils/enums'
+    details: Runtime enums and Zod schemas.
+    link: /guide/enums
+  - title: '@kyco-utils/types'
+    details: Shared, dependency-free TypeScript types.
+    link: /guide/types
 ---

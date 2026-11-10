@@ -4,9 +4,12 @@ import { tmpdir } from 'node:os'
 import { dirname, join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { defineConfig, type Plugin } from 'vitepress'
+import { defineConfig, type MarkdownRenderer, type Plugin } from 'vitepress'
 
 import apiSidebar from '../api/typedoc-sidebar.json' with { type: 'json' }
+
+const PACKAGE_ORDER = ['search', 'number', 'enums', 'types']
+const packageRank = (text = '') => PACKAGE_ORDER.indexOf(text.replace('@kyco-utils/', ''))
 
 const docsDir = fileURLToPath(new URL('../../', import.meta.url))
 const packagesDir = fileURLToPath(new URL('../../../../packages/', import.meta.url))
@@ -77,6 +80,40 @@ const typedocWatch = (): Plugin => ({
   },
 })
 
+const PACKAGE_MANAGERS = [
+  { name: 'pnpm', add: 'pnpm add' },
+  { name: 'npm', add: 'npm install' },
+  { name: 'yarn', add: 'yarn add' },
+  { name: 'bun', add: 'bun add' },
+]
+
+/**
+ * Turns every single-line `pnpm add …` shell block into a pnpm / npm / yarn / bun code group, so READMEs can stay
+ * plain pnpm. Runs on the source after `<!--@include-->`s are resolved. Tabs are synced by `theme/index.ts`.
+ */
+const packageManagerTabs = (md: MarkdownRenderer) => {
+  md.core.ruler.before('normalize', 'kyco-utils:package-manager-tabs', (state) => {
+    state.src = state.src.replace(/^```(?:sh|bash)\npnpm add (.+)\n```$/gm, (_, args: string) => {
+      const blocks = PACKAGE_MANAGERS.map(({ name, add }) => `\`\`\`sh [${name}]\n${add} ${args}\n\`\`\``)
+      return ['::: code-group', ...blocks, ':::'].join('\n\n')
+    })
+  })
+}
+
+/**
+ * Sorts the package list on the generated API index page by {@link PACKAGE_ORDER} (TypeDoc sorts alphabetically).
+ */
+const apiIndexOrder = (md: MarkdownRenderer) => {
+  md.core.ruler.before('normalize', 'kyco-utils:api-index-order', (state) => {
+    if (state.env.relativePath !== 'api/index.md') return
+    state.src = state.src.replace(/(?:^- \[@kyco-utils\/.+\n?)+/m, (list) => {
+      const items = list.trimEnd().split('\n')
+      const name = (item: string) => item.match(/@kyco-utils\/[a-z-]+/)?.[0]
+      return `${items.sort((a, b) => packageRank(name(a)) - packageRank(name(b))).join('\n')}\n`
+    })
+  })
+}
+
 export default defineConfig({
   vite: { plugins: [typedocWatch()] },
   title: '@kyco-utils',
@@ -85,15 +122,34 @@ export default defineConfig({
   outDir: '../dist',
   cleanUrls: true,
   lastUpdated: true,
+  markdown: { config: (md) => md.use(packageManagerTabs).use(apiIndexOrder) },
   themeConfig: {
     nav: [
-      { text: 'Guide', link: '/guide/getting-started' },
-      { text: 'API', link: '/api/' },
+      { text: 'Guide', link: '/guide/getting-started', activeMatch: '^/guide/' },
+      { text: 'API', link: '/api/', activeMatch: '^/api/' },
     ],
     sidebar: {
-      '/guide/': [{ text: 'Guide', items: [{ text: 'Getting started', link: '/guide/getting-started' }] }],
-      '/api/': [{ text: 'API reference', items: apiSidebar }],
+      '/guide/': [
+        {
+          text: 'Guide',
+          items: [
+            { text: 'Getting started', link: '/guide/getting-started' },
+            { text: 'Search', link: '/guide/search' },
+            { text: 'Number', link: '/guide/number' },
+            { text: 'Enums', link: '/guide/enums' },
+            { text: 'Types', link: '/guide/types' },
+          ],
+        },
+      ],
+      '/api/': [
+        {
+          text: 'API reference',
+          // TypeDoc always sorts packages alphabetically.
+          items: [...apiSidebar].sort((a, b) => packageRank(a.text) - packageRank(b.text)),
+        },
+      ],
     },
+    outline: [2, 3],
     search: { provider: 'local' },
     socialLinks: [{ icon: 'github', link: 'https://github.com/kyco/kyco-utils' }],
   },

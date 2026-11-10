@@ -5,7 +5,8 @@
   "packageOptions": {
     "entryPoints": ["src/index.ts"],
     "readme": "none",
-    "sort": ["source-order"]
+    "sort": ["source-order"],
+    "groupOrder": ["Functions", "Enumerations", "Variables", "Schemas", "Type Aliases", "*"]
   },
   "plugin": ["typedoc-plugin-markdown", "typedoc-vitepress-theme"],
   "out": "src/api",

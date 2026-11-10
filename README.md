@@ -6,28 +6,39 @@ Small, tree-shakeable TypeScript utilities. Install only the packages you need.
 
 ## Packages
 
-All packages are ESM only. See each package's README for details.
+All packages are ESM only.
 
-| Package                                             | Description                                        | Version                                                                                                                 |
-| --------------------------------------------------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| [`@kyco-utils/types`](packages/types)               | Shared, dependency-free TypeScript types.          | [![npm](https://img.shields.io/npm/v/@kyco-utils/types)](https://www.npmjs.com/package/@kyco-utils/types)               |
-| [`@kyco-utils/enums`](packages/enums)               | Runtime enums and their Zod schemas.               | [![npm](https://img.shields.io/npm/v/@kyco-utils/enums)](https://www.npmjs.com/package/@kyco-utils/enums)               |
-| [`@kyco-utils/number`](packages/number)             | Locale-aware number utilities.                     | [![npm](https://img.shields.io/npm/v/@kyco-utils/number)](https://www.npmjs.com/package/@kyco-utils/number)             |
-| [`@kyco-utils/biome-config`](packages/biome-config) | Shared [Biome](https://biomejs.dev) configuration. | [![npm](https://img.shields.io/npm/v/@kyco-utils/biome-config)](https://www.npmjs.com/package/@kyco-utils/biome-config) |
+| Package                                             | Description                                            | Version                                                                                                                 |
+| --------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| [`@kyco-utils/search`](packages/search)             | Case- and accent-insensitive search with highlighting. | [![npm](https://img.shields.io/npm/v/@kyco-utils/search)](https://www.npmjs.com/package/@kyco-utils/search)             |
+| [`@kyco-utils/number`](packages/number)             | Locale-aware number utilities.                         | [![npm](https://img.shields.io/npm/v/@kyco-utils/number)](https://www.npmjs.com/package/@kyco-utils/number)             |
+| [`@kyco-utils/enums`](packages/enums)               | Runtime enums and their Zod schemas.                   | [![npm](https://img.shields.io/npm/v/@kyco-utils/enums)](https://www.npmjs.com/package/@kyco-utils/enums)               |
+| [`@kyco-utils/types`](packages/types)               | Shared, dependency-free TypeScript types.              | [![npm](https://img.shields.io/npm/v/@kyco-utils/types)](https://www.npmjs.com/package/@kyco-utils/types)               |
+| [`@kyco-utils/biome-config`](packages/biome-config) | Shared [Biome](https://biomejs.dev) configuration.     | [![npm](https://img.shields.io/npm/v/@kyco-utils/biome-config)](https://www.npmjs.com/package/@kyco-utils/biome-config) |
 
 ## Quick start
 
 ```sh
-pnpm add @kyco-utils/number @kyco-utils/enums zod
+pnpm add @kyco-utils/search
 ```
 
 ```ts
-import { SupportedLocale } from '@kyco-utils/enums'
-import { getNumberSeparators } from '@kyco-utils/number'
+import { filterBySearch } from '@kyco-utils/search'
 
-getNumberSeparators(SupportedLocale.DE_DE)
-// { thousandsSeparator: '.', decimalSeparator: ',' }
+const users = [
+  { name: 'Renée Smith', city: 'Paris' },
+  { name: 'John Smith', city: 'London' },
+  { name: 'Jane Doe', city: 'Paris' },
+]
+
+filterBySearch(users, 'smith paris', (user) => [user.name, user.city])
+// [{ name: 'Renée Smith', city: 'Paris' }]
+
+filterBySearch(users, 'renee', (user) => [user.name, user.city])
+// [{ name: 'Renée Smith', city: 'Paris' }]
 ```
+
+`@kyco-utils/enums` also needs [`zod`](https://zod.dev) v4.
 
 ## Contributing
 
