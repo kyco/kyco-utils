@@ -1,6 +1,6 @@
 {
   "name": "@kyco-utils/enums",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Runtime enums and Zod schemas for kyco-utils.",
   "type": "module",
   "sideEffects": false,
