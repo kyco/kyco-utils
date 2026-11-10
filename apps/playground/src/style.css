@@ -59,9 +59,9 @@ button {
   cursor: pointer;
 }
 
-input[type='checkbox'],
-input[type='radio'],
-label:has(> input[type='checkbox'], > input[type='radio']) {
+input[type="checkbox"],
+input[type="radio"],
+label:has(> input[type="checkbox"], > input[type="radio"]) {
   cursor: pointer;
 }
 
