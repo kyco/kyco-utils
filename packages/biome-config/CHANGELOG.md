@@ -1,5 +1,11 @@
 # @kyco-utils/biome-config
 
+## 1.2.0
+
+### Minor Changes
+
+- c07186c: Enable git integration (`vcs.useIgnoreFile`) in the base config.
+
 ## 1.1.0
 
 ### Minor Changes
