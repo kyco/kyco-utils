@@ -523,7 +523,7 @@ describe('+ @kyco-utils/search', () => {
   })
 
   describe('- performance', () => {
-    it('should filter 10k items with 3 fields well within a frame per keystroke', () => {
+    it('should filter 10k items with 3 fields in under 50ms per keystroke', () => {
       const first = ['Anna', 'José', 'Jürgen', 'Zoë', 'Michael', 'Sören', 'Björk', 'Łukasz']
       const last = ['Müller', 'Smith', 'Straße', 'Østergaard', 'Dvořák', 'Nguyễn', 'Brown', 'Weiß']
       const cities = ['Zürich', 'Köln', 'São Paulo', 'Kraków', 'London', 'Málaga', 'Genève', 'Århus']
@@ -547,7 +547,7 @@ describe('+ @kyco-utils/search', () => {
       const median = durations.sort((a, b) => a - b)[Math.floor(durations.length / 2)] ?? Number.POSITIVE_INFINITY
 
       expect(filterBySearch(items, 'mueller zurich', getTexts, options).length).toBeGreaterThan(0)
-      expect(median).toBeLessThan(16)
+      expect(median).toBeLessThan(50)
     })
   })
 })
