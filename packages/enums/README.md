@@ -2,7 +2,7 @@
 
 <!-- #region docs -->
 
-Shared runtime enums and their [Zod](https://zod.dev) schemas.
+Runtime enums and [Zod](https://zod.dev) schemas.
 
 ## Install
 

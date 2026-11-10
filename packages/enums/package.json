@@ -1,7 +1,7 @@
 {
   "name": "@kyco-utils/enums",
   "version": "0.2.1",
-  "description": "Shared runtime enums and Zod schemas for kyco-utils.",
+  "description": "Runtime enums and Zod schemas for kyco-utils.",
   "type": "module",
   "sideEffects": false,
   "license": "MIT",

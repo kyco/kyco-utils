@@ -20,7 +20,7 @@ const locale: SupportedLocale = 'en-US'
 const mode: ColorMode = 'dark'
 ```
 
-Runtime values and Zod schemas live in [`@kyco-utils/enums`](https://www.npmjs.com/package/@kyco-utils/enums).
+Runtime enums and Zod schemas live in [`@kyco-utils/enums`](https://www.npmjs.com/package/@kyco-utils/enums).
 
 <!-- #endregion docs -->
 
