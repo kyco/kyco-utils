@@ -25,7 +25,7 @@ describe('+ @kyco-utils/enums', () => {
 
   describe('- SupportedLocale', () => {
     it('should expose the supported locales', () => {
-      expect(Object.values(SupportedLocale)).toEqual(['en-GB', 'de-DE'])
+      expect(Object.values(SupportedLocale)).toEqual(['en-US', 'en-GB', 'de-DE'])
     })
 
     it('should cover exactly the SupportedLocale type from @kyco-utils/types', () => {

@@ -10,7 +10,7 @@ const run = () => {
     invalid: zColorMode.safeParse('invalid'),
   })
   logGroup('zSupportedLocale.safeParse', {
-    'de-DE': zSupportedLocale.safeParse('de-DE'),
+    'en-US': zSupportedLocale.safeParse('en-US'),
     'xx-XX': zSupportedLocale.safeParse('xx-XX'),
   })
 }

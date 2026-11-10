@@ -4,7 +4,7 @@ import * as z from 'zod'
 // -------------------------------------------------------
 
 /**
- * Color modes a user can choose for the UI. Runtime counterpart of the `ColorMode` type from `@kyco-utils/types`.
+ * Colour modes a user can choose for the UI.
  *
  * @enum
  * @example
@@ -39,18 +39,19 @@ export type ColorMode = ColorModeType
 // -------------------------------------------------------
 
 /**
- * Locales supported across kyco-utils. Runtime counterpart of the `SupportedLocale` type from `@kyco-utils/types`.
+ * Locales supported across kyco-utils.
  *
  * @enum
  * @example
  * ```ts
  * import { SupportedLocale } from '@kyco-utils/enums'
  *
- * const locale: SupportedLocale = SupportedLocale.DE_DE // 'de-DE'
+ * const locale: SupportedLocale = SupportedLocale.EN_US // 'en-US'
  * ```
  */
 export const SupportedLocale = {
   // @locale-updates
+  EN_US: 'en-US',
   EN_GB: 'en-GB',
   DE_DE: 'de-DE',
 } as const satisfies Record<string, SupportedLocaleType>

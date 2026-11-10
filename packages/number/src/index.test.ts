@@ -8,6 +8,13 @@ describe('+ @kyco-utils/number', () => {
       vi.restoreAllMocks()
     })
 
+    it('should return "," and "." for en-US', () => {
+      expect(getNumberSeparators('en-US')).toEqual({
+        thousandsSeparator: ',',
+        decimalSeparator: '.',
+      })
+    })
+
     it('should return "," and "." for en-GB', () => {
       expect(getNumberSeparators('en-GB')).toEqual({
         thousandsSeparator: ',',

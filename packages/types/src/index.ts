@@ -6,8 +6,8 @@
  * import type { NumberSeparators } from '@kyco-utils/types'
  *
  * const separators: NumberSeparators = {
- *   thousandsSeparator: '.',
- *   decimalSeparator: ',',
+ *   thousandsSeparator: ',',
+ *   decimalSeparator: '.',
  * }
  * ```
  */
@@ -29,14 +29,14 @@ export type NumberSeparators = {
  * ```ts
  * import type { SupportedLocale } from '@kyco-utils/types'
  *
- * const locale: SupportedLocale = 'de-DE'
+ * const locale: SupportedLocale = 'en-US'
  * ```
  */
 // @locale-updates
-export type SupportedLocale = 'en-GB' | 'de-DE'
+export type SupportedLocale = 'en-US' | 'en-GB' | 'de-DE'
 
 /**
- * Color modes a user can choose for the UI.
+ * Colour modes a user can choose for the UI.
  * For a runtime enum and Zod schema, see `ColorMode` and `zColorMode` in `@kyco-utils/enums`.
  *
  * @example

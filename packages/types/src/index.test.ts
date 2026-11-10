@@ -11,7 +11,7 @@ describe('+ @kyco-utils/types', () => {
 
   describe('- SupportedLocale', () => {
     it('should be exactly the supported locale tags', () => {
-      expectTypeOf<SupportedLocale>().toEqualTypeOf<'en-GB' | 'de-DE'>()
+      expectTypeOf<SupportedLocale>().toEqualTypeOf<'en-US' | 'en-GB' | 'de-DE'>()
     })
   })
 
