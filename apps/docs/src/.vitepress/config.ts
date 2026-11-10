@@ -119,6 +119,7 @@ export default defineConfig({
   title: '@kyco-utils',
   description: 'Shared TypeScript utilities.',
   base: '/kyco-utils/',
+  head: [['link', { rel: 'icon', href: '/kyco-utils/favicon.ico' }]],
   outDir: '../dist',
   cleanUrls: true,
   lastUpdated: true,
