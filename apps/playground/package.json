@@ -13,6 +13,7 @@
   "dependencies": {
     "@kyco-utils/enums": "workspace:*",
     "@kyco-utils/number": "workspace:*",
+    "@kyco-utils/search": "workspace:*",
     "@kyco-utils/types": "workspace:*",
     "zod": "^4.0.0"
   }

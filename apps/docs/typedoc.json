@@ -1,6 +1,6 @@
 {
   "$schema": "https://typedoc-plugin-markdown.org/schema.json",
-  "entryPoints": ["../../packages/enums", "../../packages/number", "../../packages/types"],
+  "entryPoints": ["../../packages/search", "../../packages/number", "../../packages/enums", "../../packages/types"],
   "entryPointStrategy": "packages",
   "packageOptions": {
     "entryPoints": ["src/index.ts"],

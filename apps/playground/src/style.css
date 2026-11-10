@@ -58,3 +58,172 @@ button {
   padding: 0.35rem 0.8rem;
   cursor: pointer;
 }
+
+input[type='checkbox'],
+input[type='radio'],
+label:has(> input[type='checkbox'], > input[type='radio']) {
+  cursor: pointer;
+}
+
+/* search page */
+
+.search-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+}
+
+.search-input {
+  font: inherit;
+  padding: 0.4rem 0.6rem;
+  width: min(100%, 28rem);
+}
+
+.search-input::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+
+.search-stats {
+  margin: 0.35rem 0 0;
+  font-size: 0.85rem;
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+
+.search-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: 1rem;
+  margin-top: 0.75rem;
+  align-items: start;
+}
+
+.search-options-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.search-code {
+  position: relative;
+  min-width: 0;
+}
+
+.search-code pre {
+  margin: 0;
+  padding: 0.75rem;
+  overflow-x: auto;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  border-radius: 6px;
+  background: color-mix(in srgb, currentColor 6%, transparent);
+}
+
+.search-code-actions {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  display: flex;
+  gap: 0.35rem;
+}
+
+.search-code-actions button {
+  font-size: 0.75rem;
+}
+
+.search-toggles {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-family: ui-monospace, monospace;
+  font-size: 0.9rem;
+}
+
+.search-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+fieldset.search-toggle {
+  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  border-radius: 6px;
+  padding: 0.15rem 0.6rem;
+  margin: 0;
+}
+
+fieldset.search-toggle legend {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.search-results {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.search-results li {
+  display: grid;
+  grid-template-columns: minmax(10rem, 1.5fr) minmax(8rem, 1fr) 5rem;
+  gap: 1rem;
+  padding: 0.3rem 0.5rem;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+}
+
+.search-id {
+  font-family: ui-monospace, monospace;
+  opacity: 0.8;
+}
+
+.search-results[data-highlight="words"] .seg-word,
+.search-results[data-highlight="both"] .seg-word,
+.search-results[data-highlight="letters"] .seg-match {
+  background: color-mix(in srgb, #f5c400 35%, transparent);
+}
+
+.search-results[data-highlight="letters"] .seg-match,
+.search-results[data-highlight="both"] .seg-match {
+  font-weight: 700;
+}
+
+.search-examples {
+  list-style: none;
+  padding: 0.75rem;
+  margin: 0.75rem 0 0;
+  border: 1px solid color-mix(in srgb, currentColor 15%, transparent);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.search-examples[hidden] {
+  display: none;
+}
+
+.search-examples li {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  gap: 0 0.75rem;
+  align-items: baseline;
+}
+
+.search-examples button {
+  font-family: ui-monospace, monospace;
+  white-space: nowrap;
+  grid-row: span 2;
+}
+
+.search-finds {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.search-empty {
+  opacity: 0.6;
+}
