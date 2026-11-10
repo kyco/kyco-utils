@@ -1,5 +1,4 @@
-import type { UserLocale } from '@kyco-utils/enums'
-import type { NumberSeparators } from '@kyco-utils/types'
+import type { NumberSeparators, SupportedLocale } from '@kyco-utils/types'
 
 const SAMPLE_NUMBER = 1234567.8
 const DEFAULT_THOUSANDS_SEPARATOR = ','
@@ -9,18 +8,17 @@ const DEFAULT_DECIMAL_SEPARATOR = '.'
  * Returns the thousands and decimal separators for a locale, as used by `Intl.NumberFormat`.
  * Falls back to `,` and `.` if the locale doesn't define one.
  *
- * @param locale - The {@link UserLocale} to get separators for.
+ * @param locale - The {@link SupportedLocale} to get separators for.
  * @returns The {@link NumberSeparators} for the locale.
  * @example
  * ```ts
- * import { UserLocale } from '@kyco-utils/enums'
  * import { getNumberSeparators } from '@kyco-utils/number'
  *
- * getNumberSeparators(UserLocale.EN_GB) // { thousandsSeparator: ',', decimalSeparator: '.' }
- * getNumberSeparators(UserLocale.DE_DE) // { thousandsSeparator: '.', decimalSeparator: ',' }
+ * getNumberSeparators('en-GB') // { thousandsSeparator: ',', decimalSeparator: '.' }
+ * getNumberSeparators('de-DE') // { thousandsSeparator: '.', decimalSeparator: ',' }
  * ```
  */
-export const getNumberSeparators = (locale: UserLocale): NumberSeparators => {
+export const getNumberSeparators = (locale: SupportedLocale): NumberSeparators => {
   // @locale-updates
   const parts = new Intl.NumberFormat(locale).formatToParts(SAMPLE_NUMBER)
   const thousandsSeparator = parts.find((part) => part.type === 'group')?.value ?? DEFAULT_THOUSANDS_SEPARATOR

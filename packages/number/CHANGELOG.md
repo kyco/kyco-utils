@@ -1,5 +1,16 @@
 # @kyco-utils/number
 
+## 0.3.0
+
+### Minor Changes
+
+- 60a72a3: `getNumberSeparators` takes `SupportedLocale` from `@kyco-utils/types`, which adds `en-US`. Drop the `zod` peer dependency.
+
+### Patch Changes
+
+- Updated dependencies [60a72a3]
+  - @kyco-utils/types@0.3.0
+
 ## 0.2.1
 
 ### Patch Changes

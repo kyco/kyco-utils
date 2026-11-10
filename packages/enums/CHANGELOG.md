@@ -1,5 +1,16 @@
 # @kyco-utils/enums
 
+## 0.3.0
+
+### Minor Changes
+
+- 60a72a3: Rename `UserLocale` and `zUserLocale` to `SupportedLocale` and `zSupportedLocale`. Add `en-US` to `SupportedLocale`.
+
+### Patch Changes
+
+- Updated dependencies [60a72a3]
+  - @kyco-utils/types@0.3.0
+
 ## 0.2.1
 
 ### Patch Changes

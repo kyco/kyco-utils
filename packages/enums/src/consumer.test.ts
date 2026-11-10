@@ -9,7 +9,7 @@ describe('+ @kyco-utils/enums (consumer)', () => {
   })
 
   it('should expose only the public API', () => {
-    expect(Object.keys(mod).sort()).toEqual(['ColorMode', 'UserLocale', 'zColorMode', 'zUserLocale'])
+    expect(Object.keys(mod).sort()).toEqual(['ColorMode', 'SupportedLocale', 'zColorMode', 'zSupportedLocale'])
   })
 
   it('should return the value from ColorMode', () => {
@@ -20,11 +20,11 @@ describe('+ @kyco-utils/enums (consumer)', () => {
     expect(mod.zColorMode.parse('dark')).toBe('dark')
   })
 
-  it('should return the value from UserLocale', () => {
-    expect(mod.UserLocale.DE_DE).toBe('de-DE')
+  it('should return the value from SupportedLocale', () => {
+    expect(mod.SupportedLocale.DE_DE).toBe('de-DE')
   })
 
-  it('should return the parsed value from zUserLocale when given a locale', () => {
-    expect(mod.zUserLocale.parse('de-DE')).toBe('de-DE')
+  it('should return the parsed value from zSupportedLocale when given a locale', () => {
+    expect(mod.zSupportedLocale.parse('de-DE')).toBe('de-DE')
   })
 })

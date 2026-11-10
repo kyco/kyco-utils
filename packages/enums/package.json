@@ -1,6 +1,6 @@
 {
   "name": "@kyco-utils/enums",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Shared runtime enums and Zod schemas for kyco-utils.",
   "type": "module",
   "sideEffects": false,
@@ -25,6 +25,9 @@
     "build": "vp pack",
     "dev": "vp pack --watch",
     "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@kyco-utils/types": "workspace:^"
   },
   "peerDependencies": {
     "zod": "^4.0.0"
