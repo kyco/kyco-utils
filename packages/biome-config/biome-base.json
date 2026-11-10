@@ -17,10 +17,16 @@
     "rules": {
       "preset": "recommended",
       "style": {
+        "noNonNullAssertion": "warn",
         "useConst": {
           "fix": "none",
           "level": "warn"
         }
+      },
+      "a11y": {
+        "noAutofocus": "warn",
+        "useKeyWithClickEvents": "warn",
+        "noStaticElementInteractions": "warn"
       },
       "suspicious": {
         "noArrayIndexKey": "warn",

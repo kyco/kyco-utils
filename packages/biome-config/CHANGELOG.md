@@ -1,5 +1,11 @@
 # @kyco-utils/biome-config
 
+## 1.1.0
+
+### Minor Changes
+
+- e98388a: Add `noNonNullAssertion`, `noAutofocus`, `useKeyWithClickEvents` and `noStaticElementInteractions` rules as warnings.
+
 ## 1.0.4
 
 ### Patch Changes
