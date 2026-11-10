@@ -2,7 +2,7 @@
 
 Small, tree-shakeable TypeScript utilities. Install only the packages you need.
 
-📖 **[Documentation & API reference](https://kyco.github.io/kyco-utils)**
+[Docs & API reference](https://kyco.github.io/kyco-utils)
 
 ## Packages
 
