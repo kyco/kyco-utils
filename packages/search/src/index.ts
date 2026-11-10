@@ -5,9 +5,9 @@ export type SearchText = string | null | undefined
 export type SearchQuery = string | readonly string[]
 
 export type SearchOptions = {
-  /** Ignore diacritics, e.g. `é` ↔ `e`, `ä` ↔ `a`. Default `true`. */
+  /** Ignore diacritics, so `e` matches `é` and `a` matches `ä`, and vice versa. Default `true`. */
   ignoreDiacritics?: boolean
-  /** Treat `ä`, `ö`, `ü` as `ae`, `oe`, `ue` (German spelling). Default `false`. */
+  /** Also match `ae`, `oe`, `ue` with `ä`, `ö`, `ü` (German spelling), and vice versa. Default `false`. */
   germanNormalization?: boolean
   /** Where a query word may match: anywhere in the text (`'any'`), or only where a word starts (`'wordStart'`). Default `'any'`. */
   matchFrom?: 'any' | 'wordStart'
