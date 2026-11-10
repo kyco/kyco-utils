@@ -60,13 +60,13 @@ Segments are plain text, so the query can't inject markup.
 
 | Option                | Default | Description                                                                    |
 | --------------------- | ------- | ------------------------------------------------------------------------------ |
-| `ignoreDiacritics`    | `true`  | `é` matches `e`, `ü` matches `u`.                                              |
+| `ignoreDiacritics`    | `true`  | `e` matches `é`, `u` matches `ü`, and vice versa.                              |
 | `matchFrom`           | `'any'` | `'any'` matches anywhere; `'wordStart'` only at the start of a word.           |
 | `germanNormalization` | `false` | Also match `ä`, `ö`, `ü` with `ae`, `oe`, `ue`, e.g. `mueller` finds `Müller`. |
 
 ## Matching rules
 
-- Case is ignored, and `ß` matches `ss`.
+- Case is ignored, and `ss` matches `ß`.
 - The query is split into words on anything that isn't a letter or number.
 
 <!-- #endregion docs -->

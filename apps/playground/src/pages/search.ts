@@ -49,7 +49,7 @@ const EXAMPLES: { query: string; note: string }[] = [
   { query: 'smith, john', note: 'The comma splits words, so it finds Smith John.' },
   { query: 'voice', note: 'Invoice with matchFrom any, nothing with wordStart.' },
   { query: 'krakow', note: 'Kraków; nothing without ignoreDiacritics.' },
-  { query: 'strasse', note: 'ß always matches ss: Straße.' },
+  { query: 'strasse', note: 'ss always matches ß: Straße.' },
   { query: 'mueller', note: 'Mueller; Müller too with germanNormalization.' },
 ]
 
