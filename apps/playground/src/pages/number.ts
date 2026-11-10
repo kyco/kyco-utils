@@ -1,4 +1,4 @@
-import { UserLocale } from '@kyco-utils/enums'
+import { SupportedLocale } from '@kyco-utils/enums'
 import { getNumberSeparators } from '@kyco-utils/number'
 
 import { definePage, h, logGroup } from '../page'
@@ -6,7 +6,7 @@ import { definePage, h, logGroup } from '../page'
 const run = () => {
   logGroup(
     'getNumberSeparators',
-    Object.fromEntries(Object.values(UserLocale).map((locale) => [locale, getNumberSeparators(locale)])),
+    Object.fromEntries(Object.values(SupportedLocale).map((locale) => [locale, getNumberSeparators(locale)])),
   )
 }
 

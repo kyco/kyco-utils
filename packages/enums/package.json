@@ -26,6 +26,9 @@
     "dev": "vp pack --watch",
     "typecheck": "tsc --noEmit"
   },
+  "dependencies": {
+    "@kyco-utils/types": "workspace:^"
+  },
   "peerDependencies": {
     "zod": "^4.0.0"
   },

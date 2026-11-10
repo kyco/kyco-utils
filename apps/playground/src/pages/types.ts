@@ -1,11 +1,11 @@
-import { UserLocale } from '@kyco-utils/enums'
+import { SupportedLocale } from '@kyco-utils/enums'
 import { getNumberSeparators } from '@kyco-utils/number'
 import type { NumberSeparators } from '@kyco-utils/types'
 
 import { definePage, h, logGroup } from '../page'
 
 const run = () => {
-  const separators: NumberSeparators = getNumberSeparators(UserLocale.EN_GB)
+  const separators: NumberSeparators = getNumberSeparators(SupportedLocale.EN_GB)
   logGroup('NumberSeparators', { separators })
 }
 

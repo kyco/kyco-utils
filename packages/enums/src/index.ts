@@ -1,9 +1,10 @@
+import type { ColorMode as ColorModeType, SupportedLocale as SupportedLocaleType } from '@kyco-utils/types'
 import * as z from 'zod'
 
 // -------------------------------------------------------
 
 /**
- * Color modes a user can choose for the UI.
+ * Colour modes a user can choose for the UI.
  *
  * @enum
  * @example
@@ -17,7 +18,7 @@ export const ColorMode = {
   SYSTEM: 'system',
   LIGHT: 'light',
   DARK: 'dark',
-} as const
+} as const satisfies Record<string, ColorModeType>
 
 /**
  * Zod schema that validates a {@link ColorMode}.
@@ -33,44 +34,43 @@ export const ColorMode = {
  */
 export const zColorMode = z.enum(ColorMode)
 
-export type ColorMode = z.infer<typeof zColorMode>
+export type ColorMode = ColorModeType
 
 // -------------------------------------------------------
 
 /**
- * Locales supported across kyco-utils. Uses [BCP 47](https://developer.mozilla.org/en-US/docs/Glossary/BCP_47_language_tag)
- * language tags in the form `{language}-{region}`, where `{language}` is an
- * [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes) code and
- * `{region}` is an [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes) code.
+ * Locales supported across kyco-utils.
  *
  * @enum
  * @example
  * ```ts
- * import { UserLocale } from '@kyco-utils/enums'
+ * import { SupportedLocale } from '@kyco-utils/enums'
  *
- * const locale: UserLocale = UserLocale.DE_DE // 'de-DE'
+ * const locale: SupportedLocale = SupportedLocale.EN_US // 'en-US'
  * ```
  */
-export const UserLocale = {
+export const SupportedLocale = {
   // @locale-updates
+  EN_US: 'en-US',
   EN_GB: 'en-GB',
   DE_DE: 'de-DE',
-} as const
+} as const satisfies Record<string, SupportedLocaleType>
 
 /**
- * Zod schema that validates a {@link UserLocale}.
+ * Zod schema that validates a {@link SupportedLocale}.
  *
  * @group Schemas
  * @example
  * ```ts
- * import { zUserLocale } from '@kyco-utils/enums'
+ * import { zSupportedLocale } from '@kyco-utils/enums'
  *
- * zUserLocale.parse('en-GB') // 'en-GB'
- * zUserLocale.safeParse('fr-FR').success // false
+ * zSupportedLocale.parse('en-GB') // 'en-GB'
+ * zSupportedLocale.safeParse('fr-FR').success // false
+ *
+ * // Build an app-specific subset:
+ * const zUserLocale = z.enum([SupportedLocale.EN_GB])
  * ```
  */
-export const zUserLocale = z.enum(UserLocale)
+export const zSupportedLocale = z.enum(SupportedLocale)
 
-export type UserLocale = z.infer<typeof zUserLocale>
-
-// -------------------------------------------------------
+export type SupportedLocale = SupportedLocaleType

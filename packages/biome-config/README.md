@@ -4,13 +4,9 @@ Shared [Biome](https://biomejs.dev) configuration for kyco-utils.
 
 ## Usage
 
-Install the package:
-
 ```sh
 pnpm add -D @kyco-utils/biome-config @biomejs/biome
 ```
-
-Extend it from your `biome.json`:
 
 ```json
 {
@@ -23,8 +19,6 @@ Extend it from your `biome.json`:
   }
 }
 ```
-
-Any rule can be overridden locally — `extends` merges the shared config with your own.
 
 ## License
 

@@ -1,17 +1,17 @@
-import { ColorMode, UserLocale, zColorMode, zUserLocale } from '@kyco-utils/enums'
+import { ColorMode, SupportedLocale, zColorMode, zSupportedLocale } from '@kyco-utils/enums'
 
 import { definePage, h, logGroup } from '../page'
 
 const run = () => {
   logGroup('ColorMode', { ColorMode, values: Object.values(ColorMode) })
-  logGroup('UserLocale', { UserLocale, values: Object.values(UserLocale) })
+  logGroup('SupportedLocale', { SupportedLocale, values: Object.values(SupportedLocale) })
   logGroup('zColorMode.safeParse', {
     dark: zColorMode.safeParse('dark'),
     invalid: zColorMode.safeParse('invalid'),
   })
-  logGroup('zUserLocale.safeParse', {
-    'de-DE': zUserLocale.safeParse('de-DE'),
-    'xx-XX': zUserLocale.safeParse('xx-XX'),
+  logGroup('zSupportedLocale.safeParse', {
+    'en-US': zSupportedLocale.safeParse('en-US'),
+    'xx-XX': zSupportedLocale.safeParse('xx-XX'),
   })
 }
 

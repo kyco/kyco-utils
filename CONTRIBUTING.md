@@ -26,18 +26,29 @@ pnpm lint        # pnpm lint:fix to auto-fix
 
 ## Releasing
 
-Releases use [Changesets](https://github.com/changesets/changesets). Branch flow: `feature/*` → `develop` → `main`.
+Releases use [Changesets](https://github.com/changesets/changesets).
 
-1. **Add a changeset** on your feature branch for every package that changed. Either run the `/prep-release` skill (finds changed packages and writes the changesets), or run:
+Branch flow: `feature/*` → `develop` → `main`.
+
+Run the `/prep-release` skill on your feature branch. It writes the changesets, commits them and opens a PR to `develop` (steps 1–2). Then continue from step 3.
+
+To do it manually:
+
+1. **Add a changeset** on your feature branch for every package that changed:
 
    ```sh
    pnpm changeset
    ```
 
-   Pick the packages and the bump (patch/minor/major), write a summary, and commit the generated `.changeset/*.md` file. Write the summary in plain English, not Conventional Commits format. It goes straight into the package's CHANGELOG, e.g. "Fix rounding in `formatNumber` for negative values." or "Add `parseNumber` helper."
+   - Pick the packages and the bump (patch/minor/major), write a summary, and commit the generated `.changeset/*.md` file.
+   - Write the summary in plain English, not Conventional Commits format. The summary goes straight into the package's CHANGELOG. Keep it short: name what changed, skip the reasons, e.g. "Fix `formatNumber` rounding for negatives." or "Add `parseNumber` helper."
+
 2. **Open a PR to `develop`.** CI runs lint, typecheck, build and tests.
-3. **Merge it.** The `changeset` workflow opens (or updates) a `chore: version packages` PR on `develop` that bumps versions and changelogs.
+
+3. **Merge the PR.** The `changeset` workflow opens (or updates) a `chore: version packages` PR on `develop` that bumps versions and changelogs.
+
 4. **Merge the version packages PR.** The `changeset` workflow then opens a `chore: release` PR from `develop` to `main`.
+
 5. **Merge the release PR.** The `release` workflow builds, tests and publishes to npm (Trusted Publishing), creates git tags and GitHub releases, then syncs `main` back into `develop`.
 
 Changes that don't affect a published package (CI, docs, apps, root tooling) don't need a changeset.
