@@ -1,5 +1,11 @@
 # @kyco-utils/types
 
+## 0.3.1
+
+### Patch Changes
+
+- 15a14d5: Clarify the README note on where runtime enums live.
+
 ## 0.3.0
 
 ### Minor Changes
