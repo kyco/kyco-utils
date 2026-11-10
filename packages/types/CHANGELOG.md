@@ -1,5 +1,11 @@
 # @kyco-utils/types
 
+## 0.3.0
+
+### Minor Changes
+
+- 60a72a3: Add `SupportedLocale` and `ColorMode` types.
+
 ## 0.2.1
 
 ### Patch Changes

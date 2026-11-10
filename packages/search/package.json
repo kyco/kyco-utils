@@ -1,6 +1,6 @@
 {
   "name": "@kyco-utils/search",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Dependency-free word search with diacritic folding and highlight ranges.",
   "type": "module",
   "sideEffects": false,
