@@ -1,5 +1,11 @@
 # @kyco-utils/enums
 
+## 0.3.1
+
+### Patch Changes
+
+- e98388a: Update package description.
+
 ## 0.3.0
 
 ### Minor Changes
