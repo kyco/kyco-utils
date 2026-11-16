@@ -6,4 +6,5 @@ allowBuilds:
   "@biomejs/biome": true
   esbuild: true
 overrides:
+  minimatch@>=7.0.0 <11.0.1: ^11.0.1
   vite@<=6.4.3: ^6.4.4
