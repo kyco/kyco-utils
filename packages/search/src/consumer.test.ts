@@ -23,20 +23,22 @@ describe('+ @kyco-utils/search (consumer)', () => {
       mod.matchesSearch(['Mueller', null], 'müller', {
         ignoreDiacritics: true,
         germanNormalization: true,
-        matchFrom: 'wordStart',
+        threshold: 'wordStartsWith',
+        sort: true,
       }),
     ).toBe(true)
   })
 
   it('should return the matching items from filterBySearch', () => {
-    const items = [{ name: 'José' }, { name: 'Anna' }]
+    const items = [{ name: 'Joseph' }, { name: 'Anna' }, { name: 'José' }]
     expect(
       mod.filterBySearch(items, ['jose'], (item) => [item.name], {
         ignoreDiacritics: true,
         germanNormalization: false,
-        matchFrom: 'any',
+        threshold: 'matches',
+        sort: false,
       }),
-    ).toEqual([{ name: 'José' }])
+    ).toEqual([{ name: 'Joseph' }, { name: 'José' }])
   })
 
   it('should return the matched ranges from findMatchRanges', () => {
@@ -44,7 +46,8 @@ describe('+ @kyco-utils/search (consumer)', () => {
       mod.findMatchRanges('Herr Müller', 'mue', {
         ignoreDiacritics: false,
         germanNormalization: true,
-        matchFrom: 'wordStart',
+        threshold: 'wordStartsWith',
+        sort: true,
       }),
     ).toEqual([{ start: 5, end: 7 }])
   })
@@ -54,7 +57,8 @@ describe('+ @kyco-utils/search (consumer)', () => {
       mod.getHighlightSegments('Herr Müller', 'mue', {
         ignoreDiacritics: true,
         germanNormalization: true,
-        matchFrom: 'wordStart',
+        threshold: 'wordStartsWith',
+        sort: true,
       }),
     ).toEqual([
       { text: 'Herr ', isMatch: false, isInMatchedWord: false },

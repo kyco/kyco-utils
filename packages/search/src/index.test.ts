@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vite-plus/test'
 
-import type { SearchOptions, SearchText } from './index'
+import type { SearchOptions, SearchText, SearchThreshold } from './index'
 
 import { filterBySearch, findMatchRanges, getHighlightSegments, matchesSearch, splitByMatchRanges } from './index'
 
@@ -63,23 +63,28 @@ describe('+ @kyco-utils/search', () => {
     })
 
     describe('option combinations for "müller"', () => {
-      it('should find Müller and Muller with the defaults', () => {
-        expect(found(NAMES, 'müller')).toEqual(['Müller', 'Muller'])
+      const contains = { threshold: 'contains' } as const
+
+      it('should find Müller, Mueller and Muller with the defaults', () => {
+        expect(found(NAMES, 'müller')).toEqual(['Müller', 'Mueller', 'Muller'])
+      })
+
+      it('should find Müller and Muller with only ignoreDiacritics', () => {
+        expect(found(NAMES, 'müller', { ...contains, germanNormalization: false })).toEqual(['Müller', 'Muller'])
       })
 
       it('should find Müller, Mueller and Muller with ignoreDiacritics and germanNormalization', () => {
-        expect(found(NAMES, 'müller', { germanNormalization: true })).toEqual(['Müller', 'Mueller', 'Muller'])
+        expect(found(NAMES, 'müller', contains)).toEqual(['Müller', 'Mueller', 'Muller'])
       })
 
       it('should find only Müller without ignoreDiacritics or germanNormalization', () => {
-        expect(found(NAMES, 'müller', { ignoreDiacritics: false })).toEqual(['Müller'])
+        expect(found(NAMES, 'müller', { ...contains, ignoreDiacritics: false, germanNormalization: false })).toEqual([
+          'Müller',
+        ])
       })
 
       it('should find Müller and Mueller but not Muller with only germanNormalization', () => {
-        expect(found(NAMES, 'müller', { ignoreDiacritics: false, germanNormalization: true })).toEqual([
-          'Müller',
-          'Mueller',
-        ])
+        expect(found(NAMES, 'müller', { ...contains, ignoreDiacritics: false })).toEqual(['Müller', 'Mueller'])
       })
     })
 
@@ -109,8 +114,9 @@ describe('+ @kyco-utils/search', () => {
         expect(matchesSearch(['Währung'], 'e', { germanNormalization: true })).toBe(false)
       })
 
-      it('should not spell out umlauts by default', () => {
-        expect(matchesSearch(['Müller'], 'mueller')).toBe(false)
+      it('should spell out umlauts by default', () => {
+        expect(matchesSearch(['Müller'], 'mueller')).toBe(true)
+        expect(matchesSearch(['Müller'], 'mueller', { germanNormalization: false })).toBe(false)
       })
     })
 
@@ -153,20 +159,20 @@ describe('+ @kyco-utils/search', () => {
       })
     })
 
-    describe('matchFrom', () => {
-      it('should match anywhere in a word with "any"', () => {
+    describe('threshold wordStartsWith', () => {
+      it('should match anywhere in a word with "matches"', () => {
         expect(matchesSearch(['Invoice'], 'voice')).toBe(true)
-        expect(matchesSearch(['Invoice'], 'voice', { matchFrom: 'any' })).toBe(true)
+        expect(matchesSearch(['Invoice'], 'voice', { threshold: 'matches' })).toBe(true)
       })
 
-      it('should match only at word starts with "wordStart"', () => {
-        const options = { matchFrom: 'wordStart' } as const
+      it('should match only at word starts with "wordStartsWith"', () => {
+        const options = { threshold: 'wordStartsWith' } as const
         expect(matchesSearch(['Invoice'], 'voice', options)).toBe(false)
         expect(matchesSearch(['Invoice'], 'inv', options)).toBe(true)
       })
 
       it('should treat the start of the text, spaces and punctuation as word starts', () => {
-        const options = { matchFrom: 'wordStart' } as const
+        const options = { threshold: 'wordStartsWith' } as const
         expect(matchesSearch(['Invoice number'], 'num', options)).toBe(true)
         expect(matchesSearch(['(language)'], 'lang', options)).toBe(true)
         expect(matchesSearch(['anna@example.com'], 'example', options)).toBe(true)
@@ -175,17 +181,97 @@ describe('+ @kyco-utils/search', () => {
       })
 
       it('should find a later occurrence at a word start', () => {
-        expect(matchesSearch(['banana nan'], 'nan', { matchFrom: 'wordStart' })).toBe(true)
+        expect(matchesSearch(['banana nan'], 'nan', { threshold: 'wordStartsWith' })).toBe(true)
       })
 
       it('should not treat a position after a letter with diacritics as a word start', () => {
-        expect(matchesSearch(['Zoëlle'], 'lle', { matchFrom: 'wordStart' })).toBe(false)
-        expect(matchesSearch(['Zoëlle'], 'lle', { matchFrom: 'wordStart', ignoreDiacritics: false })).toBe(false)
+        expect(matchesSearch(['Zoëlle'], 'lle', { threshold: 'wordStartsWith' })).toBe(false)
+        expect(matchesSearch(['Zoëlle'], 'lle', { threshold: 'wordStartsWith', ignoreDiacritics: false })).toBe(false)
       })
 
       it('should not match the second letter of a spelled-out umlaut as a word start', () => {
-        expect(matchesSearch(['Ärger'], 'erger', { matchFrom: 'wordStart', germanNormalization: true })).toBe(false)
-        expect(matchesSearch(['Ärger'], 'aerger', { matchFrom: 'wordStart', germanNormalization: true })).toBe(true)
+        expect(matchesSearch(['Ärger'], 'erger', { threshold: 'wordStartsWith', germanNormalization: true })).toBe(
+          false,
+        )
+        expect(matchesSearch(['Ärger'], 'aerger', { threshold: 'wordStartsWith', germanNormalization: true })).toBe(
+          true,
+        )
+      })
+    })
+
+    describe('tiers', () => {
+      const examples: [SearchThreshold, string, string][] = [
+        ['equal', 'Paris', 'paris'],
+        ['startsWith', 'Paris', 'par'],
+        ['wordStartsWith', 'John Smith', 'sm'],
+        ['contains', 'Invoice', 'voi'],
+        ['acronym', 'International Business Machines', 'ibm'],
+        ['matches', 'Müller', 'muler'],
+      ]
+
+      it('should match each tier at its own threshold and every lower one', () => {
+        examples.forEach(([tier, text, query], index) => {
+          for (const [threshold] of examples.slice(index)) {
+            expect(matchesSearch([text], query, { threshold }), `${tier} at ${threshold}`).toBe(true)
+          }
+        })
+      })
+
+      it('should not match a tier at a stricter threshold', () => {
+        examples.forEach(([tier, text, query], index) => {
+          for (const [threshold] of examples.slice(0, index)) {
+            expect(matchesSearch([text], query, { threshold }), `${tier} at ${threshold}`).toBe(false)
+          }
+        })
+      })
+
+      it('should default to "matches"', () => {
+        expect(matchesSearch(['Müller'], 'mlr')).toBe(true)
+        expect(matchesSearch(['Müller'], 'rlm')).toBe(false)
+      })
+
+      it('should not match letters in order when a letter is wrong', () => {
+        expect(matchesSearch(['Müller'], 'mxller')).toBe(false)
+      })
+
+      it('should match acronyms with initials after punctuation', () => {
+        expect(matchesSearch(['Hans-Peter Müller'], 'hpm', { threshold: 'acronym' })).toBe(true)
+        expect(matchesSearch(['Hans Peter Müller'], 'pm', { threshold: 'acronym' })).toBe(true)
+      })
+    })
+
+    describe('punctuation inside words', () => {
+      it('should ignore punctuation between letters', () => {
+        const options = { threshold: 'contains' } as const
+        expect(matchesSearch(["Rock'n'Roll"], 'rocknroll', options)).toBe(true)
+        expect(matchesSearch(['e-mail'], 'email', options)).toBe(true)
+        expect(matchesSearch(["O'Neil"], 'oneil', options)).toBe(true)
+        expect(matchesSearch(['AT&T'], 'att', options)).toBe(true)
+      })
+
+      it('should rank "rocknroll" as equal to Rock\'n\'Roll', () => {
+        expect(matchesSearch(["Rock'n'Roll"], 'rocknroll', { threshold: 'equal' })).toBe(true)
+      })
+
+      it('should not join words separated by spaces', () => {
+        expect(matchesSearch(['rock n roll'], 'rocknroll', { threshold: 'acronym' })).toBe(false)
+        expect(matchesSearch(["Rock 'n' Roll"], 'rocknroll', { threshold: 'acronym' })).toBe(false)
+      })
+
+      it('should keep word starts from the text with punctuation', () => {
+        expect(matchesSearch(['e-mail'], 'mail', { threshold: 'wordStartsWith' })).toBe(true)
+      })
+    })
+
+    describe('whole query', () => {
+      it('should rank a multi-word query against the whole text', () => {
+        expect(matchesSearch(['John Smith'], 'john smith', { threshold: 'equal' })).toBe(true)
+        expect(matchesSearch(['John Smith'], 'john, smith', { threshold: 'equal' })).toBe(true)
+        expect(matchesSearch(['John Smith'], 'smith john', { threshold: 'equal' })).toBe(false)
+      })
+
+      it('should still match the words in any order at their own tier', () => {
+        expect(matchesSearch(['John Smith'], 'smith john', { threshold: 'wordStartsWith' })).toBe(true)
       })
     })
 
@@ -250,7 +336,7 @@ describe('+ @kyco-utils/search', () => {
     it('should pass the options on', () => {
       expect(filterBySearch(items, 'müller', getTexts, { germanNormalization: true })).toEqual([items[0], items[2]])
       expect(filterBySearch(items, 'mu', getTexts, { ignoreDiacritics: false })).toEqual([items[2]])
-      expect(filterBySearch(items, 'ith', getTexts, { matchFrom: 'wordStart' })).toEqual([])
+      expect(filterBySearch(items, 'ith', getTexts, { threshold: 'wordStartsWith' })).toEqual([])
     })
 
     it('should return items itself for queries without words', () => {
@@ -261,6 +347,67 @@ describe('+ @kyco-utils/search', () => {
 
     it('should return a new empty array when nothing matches', () => {
       expect(filterBySearch(items, 'nothing', getTexts)).toEqual([])
+    })
+
+    describe('ranking', () => {
+      const name = (item: { name: string }) => [item.name]
+      const names = (list: readonly { name: string }[]) => list.map((item) => item.name)
+
+      it('should sort by tier', () => {
+        const list = [
+          { name: 'Mobile Accessories' }, // acronym
+          { name: 'Mega' }, // matches
+          { name: 'Ma' }, // equal
+          { name: 'Gamma' }, // contains
+          { name: 'Big Machine' }, // wordStartsWith
+          { name: 'Maple' }, // startsWith
+        ]
+        expect(names(filterBySearch(list, 'ma', name))).toEqual([
+          'Ma',
+          'Maple',
+          'Big Machine',
+          'Gamma',
+          'Mobile Accessories',
+          'Mega',
+        ])
+      })
+
+      it('should sort by tier within letters in order by closeness', () => {
+        const list = [{ name: 'axxxxxb' }, { name: 'axxb' }, { name: 'axb' }]
+        expect(names(filterBySearch(list, 'ab', name))).toEqual(['axb', 'axxb', 'axxxxxb'])
+      })
+
+      it('should rank an exact-case match first among equal matches', () => {
+        const list = [{ name: 'ipad' }, { name: 'iPad' }, { name: 'IPAD' }]
+        expect(names(filterBySearch(list, 'iPad', name))).toEqual(['iPad', 'ipad', 'IPAD'])
+      })
+
+      it('should rank by the weakest query word', () => {
+        const list = [{ name: 'Jonathan Smithers' }, { name: 'John Smith' }]
+        expect(names(filterBySearch(list, 'smith jo', name))).toEqual(['Jonathan Smithers', 'John Smith'])
+        expect(names(filterBySearch(list, 'john smith', name))).toEqual(['John Smith', 'Jonathan Smithers'])
+      })
+
+      it('should break ties by field order, then input order', () => {
+        const list = [
+          { name: 'Zürich', city: 'Bern' },
+          { name: 'Bern', city: 'Zürich' },
+          { name: 'Basel', city: 'Bern' },
+        ]
+        const getNameCity = (item: (typeof list)[number]) => [item.name, item.city]
+        expect(filterBySearch(list, 'bern', getNameCity)).toEqual([list[1], list[0], list[2]])
+      })
+
+      it('should keep the input order with sort false', () => {
+        const list = [{ name: 'Amazing' }, { name: 'Gamma' }, { name: 'Ma' }]
+        expect(names(filterBySearch(list, 'ma', name, { sort: false }))).toEqual(['Amazing', 'Gamma', 'Ma'])
+      })
+
+      it('should not change the input', () => {
+        const list = [{ name: 'Amazing' }, { name: 'Ma' }]
+        filterBySearch(list, 'ma', name)
+        expect(names(list)).toEqual(['Amazing', 'Ma'])
+      })
     })
   })
 
@@ -328,9 +475,11 @@ describe('+ @kyco-utils/search', () => {
       expect(matched('José Jose', 'jose', { ignoreDiacritics: false })).toEqual(['Jose'])
     })
 
-    it('should only return ranges at word starts with "wordStart"', () => {
-      expect(matched('Invoice voice', 'voice', { matchFrom: 'wordStart' })).toEqual(['voice'])
-      expect(findMatchRanges('Invoice voice', 'voice', { matchFrom: 'wordStart' })).toEqual([{ start: 8, end: 13 }])
+    it('should only return ranges at word starts with "wordStartsWith"', () => {
+      expect(matched('Invoice voice', 'voice', { threshold: 'wordStartsWith' })).toEqual(['voice'])
+      expect(findMatchRanges('Invoice voice', 'voice', { threshold: 'wordStartsWith' })).toEqual([
+        { start: 8, end: 13 },
+      ])
     })
 
     it('should map ranges correctly after characters outside the BMP', () => {
@@ -355,6 +504,45 @@ describe('+ @kyco-utils/search', () => {
 
     it('should return no ranges when nothing matches', () => {
       expect(findMatchRanges('Hello', 'xyz')).toEqual([])
+    })
+
+    it('should include punctuation dropped inside a word', () => {
+      expect(findMatchRanges("Rock'n'Roll Café", 'rocknroll')).toEqual([{ start: 0, end: 11 }])
+      expect(matched("Mr O'Neil", 'oneil')).toEqual(["O'Neil"])
+    })
+
+    it('should return the initials for acronyms', () => {
+      expect(matched('International Business Machines', 'ibm')).toEqual(['I', 'B', 'M'])
+      expect(matched('Hans-Peter Müller', 'pm')).toEqual(['P', 'M'])
+    })
+
+    it('should return the letters for letters in order', () => {
+      expect(findMatchRanges('Müller', 'mlr')).toEqual([
+        { start: 0, end: 1 },
+        { start: 2, end: 3 },
+        { start: 5, end: 6 },
+      ])
+      expect(matched('Straße', 'sße')).toEqual(['S', 'ße'])
+    })
+
+    it('should prefer substring matches over acronyms and letters in order', () => {
+      expect(matched('Big Machine', 'ma')).toEqual(['Ma'])
+    })
+
+    it('should not return ranges below the threshold', () => {
+      expect(findMatchRanges('Müller', 'mlr', { threshold: 'acronym' })).toEqual([])
+      expect(findMatchRanges('International Business Machines', 'ibm', { threshold: 'contains' })).toEqual([])
+      expect(findMatchRanges('Paris', 'par', { threshold: 'equal' })).toEqual([])
+    })
+
+    it('should add the range of the whole query', () => {
+      expect(findMatchRanges('Smith John Smith', 'john smith', { threshold: 'equal' })).toEqual([])
+      expect(matched('John Smith', 'john smith', { threshold: 'contains' })).toEqual(['John Smith'])
+      expect(matched('John Smith', 'smith john', { threshold: 'contains' })).toEqual(['John', 'Smith'])
+    })
+
+    it('should map letters in order back through spelled-out umlauts', () => {
+      expect(matched('Müller', 'muelr')).toEqual(['Mül', 'r'])
     })
   })
 
@@ -507,7 +695,7 @@ describe('+ @kyco-utils/search', () => {
         { text: 'Mü', isMatch: true, isInMatchedWord: true },
         { text: 'ller', isMatch: false, isInMatchedWord: true },
       ])
-      expect(getHighlightSegments('Invoice voice', 'voice', { matchFrom: 'wordStart' })).toEqual([
+      expect(getHighlightSegments('Invoice voice', 'voice', { threshold: 'wordStartsWith' })).toEqual([
         { text: 'Invoice ', isMatch: false, isInMatchedWord: false },
         { text: 'voice', isMatch: true, isInMatchedWord: true },
       ])
@@ -533,8 +721,9 @@ describe('+ @kyco-utils/search', () => {
         id: String(i * 13),
       }))
       const getTexts = (item: (typeof items)[number]) => [item.name, item.city, item.id]
-      const options = { germanNormalization: true }
-      const keystrokes = ['m', 'mu', 'mue', 'muel', 'muell', 'mueller', 'mueller z', 'mueller zu']
+      const options = {}
+      // The last ones fall through to letters in order.
+      const keystrokes = ['m', 'mu', 'mue', 'muel', 'muell', 'mueller', 'mueller z', 'mueller zu', 'mlr', 'mlr zrh']
 
       // First pass folds every text once, like the first keystroke.
       for (const query of keystrokes) filterBySearch(items, query, getTexts, options)
@@ -547,7 +736,9 @@ describe('+ @kyco-utils/search', () => {
       const median = durations.sort((a, b) => a - b)[Math.floor(durations.length / 2)] ?? Number.POSITIVE_INFINITY
 
       expect(filterBySearch(items, 'mueller zurich', getTexts, options).length).toBeGreaterThan(0)
+      expect(filterBySearch(items, 'mlr zrh', getTexts, options).length).toBeGreaterThan(0)
       expect(median).toBeLessThan(50)
+      expect(Math.max(...durations)).toBeLessThan(150)
     })
   })
 })
