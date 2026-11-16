@@ -169,7 +169,7 @@ fieldset.search-toggle legend {
 
 .search-results li {
   display: grid;
-  grid-template-columns: minmax(10rem, 1.5fr) minmax(8rem, 1fr) 5rem;
+  grid-template-columns: minmax(10rem, 1.5fr) minmax(8rem, 1fr) 5rem 8rem;
   gap: 1rem;
   padding: 0.3rem 0.5rem;
   border-bottom: 1px solid color-mix(in srgb, currentColor 10%, transparent);
@@ -178,6 +178,12 @@ fieldset.search-toggle legend {
 .search-id {
   font-family: ui-monospace, monospace;
   opacity: 0.8;
+}
+
+.search-tier {
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+  opacity: 0.6;
 }
 
 .search-results[data-highlight="words"] .seg-word,

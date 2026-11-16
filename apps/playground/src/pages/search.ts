@@ -1,4 +1,10 @@
-import { filterBySearch, getHighlightSegments, matchesSearch, type SearchOptions } from '@kyco-utils/search'
+import {
+  filterBySearch,
+  getHighlightSegments,
+  matchesSearch,
+  type SearchOptions,
+  type SearchThreshold,
+} from '@kyco-utils/search'
 
 import { definePage, h } from '../page'
 
@@ -8,11 +14,21 @@ type State = {
   query: string
   ignoreDiacritics: boolean
   germanNormalization: boolean
-  matchFrom: 'any' | 'wordStart'
+  threshold: SearchThreshold
+  sort: boolean
   highlight: Highlight
 }
 
 const STORAGE_KEY = 'kyco-utils:playground:search'
+
+const THRESHOLDS: readonly SearchThreshold[] = [
+  'equal',
+  'startsWith',
+  'wordStartsWith',
+  'contains',
+  'acronym',
+  'matches',
+]
 
 const ENTRIES: Entry[] = [
   { name: 'Renée Smith', city: 'Paris', id: 1001 },
@@ -33,13 +49,17 @@ const ENTRIES: Entry[] = [
   { name: 'Muller', city: 'Lyon', id: 3003 },
   { name: 'Bär', city: 'Bern', id: 3004 },
   { name: 'Straße', city: 'Vienna', id: 3005 },
+  { name: "Rock'n'Roll Café", city: 'Memphis', id: 4001 },
+  { name: 'International Business Machines', city: 'Armonk', id: 4002 },
+  { name: "O'Neil", city: 'Dublin', id: 4003 },
 ]
 
 const DEFAULT_STATE: State = {
   query: '',
   ignoreDiacritics: true,
-  germanNormalization: false,
-  matchFrom: 'any',
+  germanNormalization: true,
+  threshold: 'matches',
+  sort: true,
   highlight: 'both',
 }
 
@@ -47,18 +67,26 @@ const EXAMPLES: { query: string; note: string }[] = [
   { query: 'renee', note: 'Renée: accents are ignored by default.' },
   { query: 'smith paris', note: 'Two words, any order, across fields: Renée Smith.' },
   { query: 'smith, john', note: 'The comma splits words, so it finds Smith John.' },
-  { query: 'voice', note: 'Invoice with matchFrom any, nothing with wordStart.' },
+  { query: 'john smith', note: 'The whole query equals John Smith, so it ranks first.' },
+  { query: 'voice', note: 'Invoice (contains), nothing at threshold wordStartsWith.' },
   { query: 'krakow', note: 'Kraków; nothing without ignoreDiacritics.' },
   { query: 'strasse', note: 'ss always matches ß: Straße.' },
-  { query: 'mueller', note: 'Mueller; Müller too with germanNormalization.' },
+  { query: 'mueller', note: 'Mueller and Müller; only Mueller without germanNormalization.' },
+  { query: 'er', note: 'Never Bär (baer): spelling out only runs for umlaut-like words.' },
+  { query: 'rocknroll', note: "Rock'n'Roll Café: punctuation inside words is ignored." },
+  { query: 'ibm', note: 'International Business Machines, as an acronym.' },
+  { query: 'muler', note: 'Müller, Mueller, Muller: letters in order.' },
+  { query: 'mlr', note: 'Letters in order; nothing at a stricter threshold.' },
 ]
 
 const loadState = (): State => {
   try {
     const stored: Partial<State> | null = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null')
     if (stored === null || typeof stored !== 'object') return { ...DEFAULT_STATE }
-    const { query, ignoreDiacritics, germanNormalization, matchFrom, highlight } = { ...DEFAULT_STATE, ...stored }
-    return { query, ignoreDiacritics, germanNormalization, matchFrom, highlight }
+    const merged = { ...DEFAULT_STATE, ...stored }
+    const { query, ignoreDiacritics, germanNormalization, sort, highlight } = merged
+    const threshold = THRESHOLDS.includes(merged.threshold) ? merged.threshold : DEFAULT_STATE.threshold
+    return { query, ignoreDiacritics, germanNormalization, threshold, sort, highlight }
   } catch {
     return { ...DEFAULT_STATE }
   }
@@ -73,6 +101,10 @@ const saveState = (state: State) => {
 }
 
 const getTexts = (entry: Entry) => [entry.name, entry.city, String(entry.id)]
+
+const getTier = (entry: Entry, query: string, options: SearchOptions) => {
+  return THRESHOLDS.find((threshold) => matchesSearch(getTexts(entry), query, { ...options, threshold }))
+}
 
 const highlighted = (text: string, query: string, options: SearchOptions) =>
   getHighlightSegments(text, query, options).map((segment) =>
@@ -112,7 +144,8 @@ export default definePage({
     const options = (): SearchOptions => ({
       ignoreDiacritics: state.ignoreDiacritics,
       germanNormalization: state.germanNormalization,
-      matchFrom: state.matchFrom,
+      threshold: state.threshold,
+      sort: state.sort,
     })
 
     const input = h('input', {
@@ -184,8 +217,12 @@ export default definePage({
           state.germanNormalization = checked
           update()
         }),
-        radios('matchFrom', ['any', 'wordStart'] as const, state.matchFrom, (value) => {
-          state.matchFrom = value
+        checkbox('sort', state.sort, (checked) => {
+          state.sort = checked
+          update()
+        }),
+        radios('threshold', THRESHOLDS, state.threshold, (value) => {
+          state.threshold = value
           update()
         }),
         radios('highlight', ['letters', 'words', 'both'] as const, state.highlight, (value) => {
@@ -229,6 +266,11 @@ export default definePage({
             h('span', { className: 'search-name' }, ...highlighted(entry.name, state.query, options())),
             h('span', { className: 'search-city' }, ...highlighted(entry.city, state.query, options())),
             h('span', { className: 'search-id' }, ...highlighted(String(entry.id), state.query, options())),
+            h(
+              'span',
+              { className: 'search-tier' },
+              state.query.trim() === '' ? '' : (getTier(entry, state.query, options()) ?? ''),
+            ),
           ),
         ),
       )
@@ -236,13 +278,14 @@ export default definePage({
     }
 
     const renderCode = () => {
-      const { ignoreDiacritics, germanNormalization, matchFrom } = options()
+      const { ignoreDiacritics, germanNormalization, threshold, sort } = options()
       const query = JSON.stringify(state.query)
       code.textContent = [
         'const options: SearchOptions = {',
         `  ignoreDiacritics: ${ignoreDiacritics},`,
         `  germanNormalization: ${germanNormalization},`,
-        `  matchFrom: '${matchFrom}',`,
+        `  threshold: '${threshold}',`,
+        `  sort: ${sort},`,
         '}',
         '',
         `filterBySearch(entries, ${query}, (entry) => [entry.name, entry.city, String(entry.id)], options)`,
